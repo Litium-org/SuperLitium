@@ -16,29 +16,48 @@ vram.screen = {
     height = love.graphics.getHeight()
 }
 
+-----------------------------------------------------
+-- builtin function XD --
+-----------------------------------------------------
+
+function findByTag(tag)
+    for k, addr in pairs(buffer.sprites) do
+        if addr.tag == tag then
+            return buffer.sprites[k]
+        end
+    end
+    --return nil
+end
+
 
 -----------------------------------------------------
     -- Object management functions
 -----------------------------------------------------
 
-function vram.addSprite(sprite, x, y, scale, tag, pallete)
+function vram.addSprite(sprite, x, y, scale, tag)
     Sprite = {
         texture = sprite,
         x = x,
         y = y,
-        scale = scale,
-        pallete = pallete
+        scale = scale
     }
     if tag ~= nil then
         Sprite.tag = "$" .. string.sub(tag, 1, 4)
     end
-
-    print(Sprite.tag)
     table.insert(buffer.sprites, Sprite)
 end
 
-function vram.addBgObject(x, y, w, h, sprite)
-    
+function vram.addBgObject(x, y, w, h, spritetbl)
+    BgObject = {
+        x = x,
+        y = y,
+        w = w,
+        h = h,
+    }
+    if sprite ~= nil then
+        BgObject.sprite = spritetbl
+    end
+    table.insert(buffer.background, BgObject)
 end
 
 function vram.addText(text, x, y, scale, txtcolor, bgcolor)
@@ -59,12 +78,12 @@ function vram.sceneColor(id)
 end
 
 -----------------------------------------------------
-    --  Buffers callbacs --
+    --  Buffers callbacks --
 -----------------------------------------------------
 
 function vram.renderSpriteBuffer()
     for k, sprdata in pairs(buffer.sprites) do
-        render.drawCall(buffer.sprites[k].texture, sprdata.x, sprdata.y, sprdata.scale, sprdata.activePallete)
+        render.drawCall(buffer.sprites[k].texture, sprdata.x, sprdata.y, sprdata.scale)
     end
 end
 
@@ -76,7 +95,6 @@ end
 
 function vram.renderTextBuffer()
     for k, txtdata in pairs(buffer.text) do
-        print(txtdata.string)
         text.drawStr(txtdata.string, txtdata.x, txtdata.y, txtdata.scale, txtdata.color1, txtdata.color2)
     end
 end
@@ -102,5 +120,20 @@ function vram.clear()
         end
     end
 end
+
+-----------------------------------------------------
+-- entity control --
+-----------------------------------------------------
+
+function vram.transformObject(tag, x, y, scale)
+    obj = findByTag("$" .. tag)
+    if obj == nil then
+        return false
+    else
+        obj.x = x
+        obj.y = y
+    end
+end
+
 
 return vram

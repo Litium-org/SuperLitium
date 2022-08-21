@@ -1,35 +1,14 @@
 render = {}
 
-defaultColors = {
-    {0,0,0,0},	-- transparent
-    {0,0,0},
-    {255,255,255},
-    {192,192,192},
-    {128,128,128},
-    {255,0,0},
-    {128,0,0},
-    {255,0,255},
-    {128,0,128},
-    {0,0,255},
-    {0,0,128},
-    {0,255,255},
-    {0,128,128},
-    {0,255,0},
-    {0,128,0},
-    {255,255,0},
-    {128,128,0}
-}
+vrampallete = require 'src.core.virtualization.nx_vramPallete'
+
+pallete = vrampallete.pallete
 
 render.wireframeMode = false
 wireframe = "fill"
 
-function render.drawCall(spritetbl, x, y, scale, pallete)
-    -- pallete control --
-    if pallete ~= nil then
-        colors = pallete
-    else
-        colors = defaultColors
-    end 
+function render.drawCall(spritetbl, x, y, scale)
+    colors = pallete
     -- wireframe for debug --
     if render.wireframeMode then
         wireframe = "line"
