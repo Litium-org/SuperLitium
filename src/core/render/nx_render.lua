@@ -33,7 +33,7 @@ function render.drawCall(spritetbl, x, y, scale)
 end
 
 function render.rectangle(type, x, y, w, h, colorid)
-    r,g,b,a = love.math.colorFromBytes(defaultColors[1], defaultColors[2], defaultColors[3], defaultColors[4])
+    r,g,b,a = love.math.colorFromBytes(pallete[colorid][1], pallete[colorid][2], pallete[colorid][3], pallete[colorid][4])
     love.graphics.push()
         love.graphics.setColor(r, g, b, a)
         love.graphics.rectangle(type, x, y, w, h)

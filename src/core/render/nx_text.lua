@@ -4,6 +4,7 @@ setColor                =               love.graphics.setColor
 rect = love.graphics.rectangle
 
 font = require 'src.engine.resources.nx_font'
+vrampallete = require 'src.core.virtualization.nx_vramPallete'
 
 -- rendercore callback to generate string
 
@@ -15,17 +16,12 @@ function text.drawStr(Textstr, x, y, FontSize, txtColor, bgColorId)
     --textStr = text.splitLetters(str)
     strNum = tostring(Textstr)
     textOutput = string.lower(strNum)
-
     --letters = tostring([[abcdefghijklmnopqrstuvwxyz0123456789 !=$(),.:;+-/|<>?[]]])
     letterSize = font.FontLetterSize
-
     textX = x
     textY = y
-
     for i = 1, #Textstr do
-
         char = textOutput:sub(i, i) -- this gets the current letter of whatever number we are in the loop
-
         --num = letters:find(char) -- this returns the position of char in our letters string.
         --print(char, num, #font[char])
         draw(font[char], textX, textY, FontSize, txtColor, bgColorId)
@@ -35,44 +31,9 @@ function text.drawStr(Textstr, x, y, FontSize, txtColor, bgColorId)
 end
 
 function draw(spritetbl, x, y, scale, TextColorID, BackgroundColorID)
-    colorsBG = {
-        {0,0,0,0},	-- transparent
-        {0,0,0},
-        {255,255,255},
-        {192,192,192},
-        {128,128,128},
-        {255,0,0},
-        {128,0,0},
-        {255,0,255},
-        {128,0,128},
-        {0,0,255},
-        {0,0,128},
-        {0,255,255},
-        {0,128,128},
-        {0,255,0},
-        {0,128,0},
-        {255,255,0},
-        {128,128,0}
-    }
-    
-    colorsText = {
-        {0,0,0},
-        {255,255,255},
-        {192,192,192},
-        {128,128,128},
-        {255,0,0},
-        {128,0,0},
-        {255,0,255},
-        {128,0,128},
-        {0,0,255},
-        {0,0,128},
-        {0,255,255},
-        {0,128,128},
-        {0,255,0},
-        {0,128,0},
-        {255,255,0},
-        {128,128,0}
-    }
+
+    colorsBG = vrampallete.pallete
+    colorsText = vrampallete.pallete
 
     -- wireframe for debug --
     if render.wireframeMode then
