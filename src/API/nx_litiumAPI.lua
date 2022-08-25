@@ -1,7 +1,7 @@
 -- Main API stack
 litiumapi = {}
 
----The Litium graphics module
+---The litium graphics module
 litiumapi.litgraphics = {}
 
 ---Create a new Object and can be transformed in Memory
@@ -15,12 +15,12 @@ function litiumapi.litgraphics.newSprite(sprite, x, y, scale, tag)
 end
 
 --- Create new rectangle (Used for background elements)
----@param filltype string
----@param x number
----@param y number
----@param w number
----@param h number
----@param colorid number
+---@param filltype string   @ Determine how the box will be filled ("Fill" or "Line")
+---@param x number          @ set X postion for the rectangle
+---@param y number          @ set Y postion for the rectangle
+---@param w number          @ set the width of the rectangle
+---@param h number          @ set the height of the rectangle
+---@param colorid number    @ set the rectangle color (1-17)
 function litiumapi.litgraphics.rect(filltype, x, y, w, h, colorid)
     vram.addBgRect(filltype, x, y, w, h, colorid)
 end
@@ -85,7 +85,7 @@ function litiumapi.system.setTitle(title)
 end
 
 
---- Litium entity control module
+---Litium entity control module
 litiumapi.litentity = {}
 
 --- Change some object properties using a Tag (Adress)

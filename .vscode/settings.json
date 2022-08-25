@@ -13,15 +13,14 @@
         "data/stages" : "json",
         "preload" : "other",
         "deps" : "lib",
-        "system" : "controller"
+        "system" : "controller",
+        "virtualization" : "middleware"
     },
     "material-icon-theme.files.associations": {
-
-        "*.lcss" : "shader",
         "conf.lua" : "settings",
         ".litversion" : "settings", 
         "push.lua" : "git",
         "push.cmd" : "git",
-        ".token" : "settings"
+        ".restore" : "search"
     },
 }

@@ -136,9 +136,14 @@ function vram.clear()
             table.remove(buffer.sprites, vdata)
         end
     end
-    for bgData = #buffer.background, 1, -1 do
-        if #buffer.background > 50 then
-            table.remove(buffer.background, bgData)
+    for bgSprites = #buffer.background.sprites, 1, -1 do
+        if #buffer.background.sprites > 20 then
+            table.remove(buffer.background.sprites, bgSprites)
+        end
+    end
+    for bgRects = #buffer.background.rectangles, 1, -1 do
+        if #buffer.background.rectangles > 30 then
+            table.remove(buffer.background.rectangles, bgRects)
         end
     end
     for txtData = #buffer.text, 1, -1 do
