@@ -1,5 +1,7 @@
 utils = {}
 
+getInfo = love.filesystem.getInfo
+
 function utils.exist(type, filename)
     if type == "file" then
         if getInfo(filename) ~= nil then

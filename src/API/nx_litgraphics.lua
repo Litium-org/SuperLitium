@@ -1,51 +1,4 @@
-    test = {
-        {255,255,0,255},	-- transparent
-        {0,0,0},
-        {255,255,255},
-        {192,192,192},
-        {128,128,128},
-        {255,0,0},
-        {128,0,0},
-        {255,0,255},
-        {128,0,128},
-        {0,0,255},
-        {0,0,128},
-        {0,255,255},
-        {0,128,128},
-        {0,255,0},
-        {0,128,0},
-        {255,255,0},
-        {128,128,0}
-    }
-
-
-    heart = {
-        {1,6,1,6,1},
-        {6,6,6,6,6},
-        {6,6,6,6,6},
-        {1,6,6,6,1},
-        {1,1,6,1,1},
-    }
-
-    x = 100
-    y = 200
-
-    litiumapi.litgraphics.newSprite(heart, x, 230, 9, "hrt")
-
-    litiumapi.litgraphics.newText("this is a test", 90, 90, 9, 6, 1)
-
-    for i = 1, 20, 1 do
-        nxhardapi.vram.addBgSprite(heart, x, 290, 6)
-        x = x + 32
-    end
-
-    litiumapi.litgraphics.backgroundColor(4)
-
-
-    ---------------------------
-
-    ---The litium graphics module
-litiumapi.litgraphics = {}
+litgraphics = {}
 
 ---Create a new Object and can be transformed in Memory
 ---@param sprite table      @ The table with sprite code
@@ -53,7 +6,7 @@ litiumapi.litgraphics = {}
 ---@param y number          @ Y position for place sprite
 ---@param scale number      @ Scale of pixels
 ---@param tag string        @ This tag is used to locate object in memory and change parameters
-function litiumapi.litgraphics.newSprite(sprite, x, y, scale, tag)
+function litgraphics.newSprite(sprite, x, y, scale, tag)
     vram.addSprite(sprite, x, y, scale, tag)
 end
 
@@ -64,7 +17,7 @@ end
 ---@param w number          @ set the width of the rectangle
 ---@param h number          @ set the height of the rectangle
 ---@param colorid number    @ set the rectangle color (1-17)
-function litiumapi.litgraphics.rect(filltype, x, y, w, h, colorid)
+function litgraphics.rect(filltype, x, y, w, h, colorid)
     vram.addBgRect(filltype, x, y, w, h, colorid)
 end
 
@@ -73,13 +26,13 @@ end
 ---@param x number          @ X position for place sprite
 ---@param y number          @ Y position for place sprite
 ---@param scale number      @ Sprite pixel scale
-function litiumapi.litgraphics.newBackgroundSprite(sprite, x, y, scale)
+function litgraphics.newBackgroundSprite(sprite, x, y, scale)
     vram.addBgSprite(sprite, x, y, scale)
 end
 
 --- Change the background color
 ---@param id number     @ Color id based on 1-17 available colors
-function litiumapi.litgraphics.backgroundColor(id)
+function litgraphics.backgroundColor(id)
     vram.sceneColor(id)
 end
 
@@ -90,18 +43,20 @@ end
 ---@param scale number      @ set the Pixel scale of text
 ---@param txtColor number   @ set the text color (1-17)
 ---@param BgColor number    @ set the background of the text color (1-17)
-function litiumapi.litgraphics.newText(string, x, y, scale, txtColor, BgColor)
+function litgraphics.newText(string, x, y, scale, txtColor, BgColor)
     vram.addText(string, x, y, scale, txtColor, BgColor)
 end
 
 --- Return screen width
 ---@return number @Window width
-function litiumapi.litgraphics.windowWidth()
+function litgraphics.windowWidth()
     return vram.screen.width
 end
 
 --- Return screen height
 ---@return number @Window height
-function litiumapi.litgraphics.windowHeight()
+function litgraphics.windowHeight()
     return vram.screen.height
 end
+
+return litgraphics

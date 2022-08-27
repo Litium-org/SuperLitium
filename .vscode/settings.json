@@ -8,13 +8,10 @@
         "loader" : "project",
         "engine" : "controller",
         "pl" : "plugin",
-        "images/stages" : "environment",
-        "data/songs": "json",
-        "data/stages" : "json",
-        "preload" : "other",
-        "deps" : "lib",
         "system" : "controller",
-        "virtualization" : "middleware"
+        "virtualization" : "middleware",
+        "installer" : "download",
+        "install" : "download"
     },
     "material-icon-theme.files.associations": {
         "conf.lua" : "settings",
