@@ -7,7 +7,7 @@ function cartloader.loadBIOS()
 end
 
 function cartloader.loadCart(cartname)
-    cart, error = love.filesystem.load()
+    cart, error = love.filesystem.load(cartname)
 
     return cart
 end

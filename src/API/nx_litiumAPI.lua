@@ -8,7 +8,7 @@ litiumapi.litdebug = require 'src.API.nx_litdebug'
 ---Litium System
 litiumapi.litsystem = require 'src.API.nx_litsystem'
 ---Litium entity control module
-litiumapi.litentity = require 'src.API.nx_entity'
+litiumapi.litentity = require 'src.API.nx_litentity'
 --Litium game control module
 litiumapi.litgame = require 'src.API.nx_litgame'
 
