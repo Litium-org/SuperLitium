@@ -1,23 +1,24 @@
 function love.load()
-    installer = require 'src.engine.resources.nx_installer'
-    litiumapi = require 'src.API.nx_litiumAPI'
-    render = require 'src.core.render.nx_render'
-
-    nxfirmware = {
-        cartloader = require 'src.core.virtualization.nx_cartloader',
-        bios = require 'src.engine.system.nx_BIOS'
-    }
+    love.keyboard.setKeyRepeat(true)
+    installer           = require 'src.engine.resources.nx_installer'
+    litiumapi           = require 'src.API.nx_litiumAPI'
+    render              = require 'src.core.render.nx_render'
+    cartloader          = require 'src.core.virtualization.nx_cartloader'
+    bios                = require 'src.engine.system.nx_bios'
 
     -- NXHardware API, for virtual hardware component comunications
     nxhardapi = {
-        vram = require 'src.core.virtualization.nx_vram',
-        debug = require 'src.debug.nx_debug',
-        vramPallete = require 'src.core.virtualization.nx_vramPallete'
+        vram            = require 'src.core.virtualization.nx_vram',
+        debug           = require 'src.debug.nx_debug',
     }
 
     -- main thread for install folders and system components (system not available now)
     installer.install()
-    nxfirmware.bios.init()
+
+    -- cartdrive initialization
+    cartdata = bios.init()
+    
+    pcall(cartdata(), create())
 end
 
 function love.draw()
@@ -29,6 +30,16 @@ function love.draw()
     nxhardapi.vram.renderSpriteBuffer()
 end
 
-function love.update(dt)
-    nxfirmware.bios.update()
+function love.update(elapsed)
+    pcall(cartdata(), update(elapsed))
+end
+
+function love.keypressed(k, scancode, isRepeat)
+    if k == "-" then
+        if isRepeat then
+            nxhardapi.debug.showCurrentColorPallete(true)
+        else
+            nxhardapi.debug.showCurrentColorPallete(false)
+        end
+    end
 end

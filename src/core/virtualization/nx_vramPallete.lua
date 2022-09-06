@@ -20,12 +20,4 @@ vramPallete.pallete = {
     {128,128,0}	                -- [17]  
 }
 
-function vramPallete.changePallete(plttTable)
-    if #plttTable > 17 then
-        return "the color pallete can't be higher than 17 colors"
-    else
-        vramPallete.pallete = plttTable
-    end
-end
-
 return vramPallete

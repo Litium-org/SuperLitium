@@ -1,5 +1,7 @@
 debugcomponent = {}
 
+vrampallete = require 'src.core.virtualization.nx_vramPallete'
+
 function debugcomponent.showTableContent(tbl, indent)
     if not indent then 
         indent = 0 
@@ -25,6 +27,16 @@ function debugcomponent.showTableContent(tbl, indent)
     end
     toprint = toprint .. string.rep(" ", indent-2) .. "}"
     return toprint
+end
+
+function debugcomponent.showCurrentColorPallete(bool)
+    if bool then
+        x = 0
+        for c = 1, #vrampallete.pallete, 1 do
+            litiumapi.litgraphics.rect("fill", x, 0, 10, 10, c)
+            x = x + 10
+        end
+    end
 end
 
 return debugcomponent

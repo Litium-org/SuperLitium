@@ -9,4 +9,8 @@ function litentity.transform(tag, x, y, scale)
     vram.transformObject(tag, x, y, scale)
 end
 
+function litentity.remove(tag)
+    
+end
+
 return litentity

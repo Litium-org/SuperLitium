@@ -1,5 +1,7 @@
 litgraphics = {}
 
+vramPallete = require 'src.core.virtualization.nx_vramPallete'
+
 ---Create a new Object and can be transformed in Memory
 ---@param sprite table      @ The table with sprite code
 ---@param x number          @ X position for place sprite
@@ -7,7 +9,7 @@ litgraphics = {}
 ---@param scale number      @ Scale of pixels
 ---@param tag string        @ This tag is used to locate object in memory and change parameters
 function litgraphics.newSprite(sprite, x, y, scale, tag)
-    vram.addSprite(sprite, x, y, scale, tag)
+    nxhardapi.vram.addSprite(sprite, x, y, scale, tag)
 end
 
 --- Create new rectangle (Used for background elements)
@@ -18,7 +20,7 @@ end
 ---@param h number          @ set the height of the rectangle
 ---@param colorid number    @ set the rectangle color (1-17)
 function litgraphics.rect(filltype, x, y, w, h, colorid)
-    vram.addBgRect(filltype, x, y, w, h, colorid)
+    nxhardapi.vram.addBgRect(filltype, x, y, w, h, colorid)
 end
 
 --- Create a new sprite but place as background
@@ -27,13 +29,13 @@ end
 ---@param y number          @ Y position for place sprite
 ---@param scale number      @ Sprite pixel scale
 function litgraphics.newBackgroundSprite(sprite, x, y, scale)
-    vram.addBgSprite(sprite, x, y, scale)
+    nxhardapi.vram.addBgSprite(sprite, x, y, scale)
 end
 
 --- Change the background color
 ---@param id number     @ Color id based on 1-17 available colors
 function litgraphics.backgroundColor(id)
-    vram.sceneColor(id)
+    nxhardapi.vram.sceneColor(id)
 end
 
 --- Create a new text
@@ -44,17 +46,30 @@ end
 ---@param txtColor number   @ set the text color (1-17)
 ---@param BgColor number    @ set the background of the text color (1-17)
 function litgraphics.newText(string, x, y, scale, txtColor, BgColor)
-    vram.addText(string, x, y, scale, txtColor, BgColor)
+    nxhardapi.vram.addText(string, x, y, scale, txtColor, BgColor)
+end
+
+--- Change the default color pallete
+---@param colorTable table  @ Table with colors in RGBA mode : {255,255,255,255}
+function litgraphics.changePallete(colorTable)
+    love.graphics.clear()
+    if #colorTable > 17 then
+        print("Pallete can't be higher than 17 colors at same time")
+        love.event.quit()
+    else
+        print("color changed")
+        vramPallete.pallete = colorTable
+    end
 end
 
 --- Return screen width
----@return number @Window width
+---@return number @ Window width
 function litgraphics.windowWidth()
     return vram.screen.width
 end
 
 --- Return screen height
----@return number @Window height
+---@return number @ Window height
 function litgraphics.windowHeight()
     return vram.screen.height
 end

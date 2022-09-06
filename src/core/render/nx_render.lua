@@ -1,13 +1,12 @@
 render = {}
 
 vrampallete = require 'src.core.virtualization.nx_vramPallete'
-
-pallete = vrampallete.pallete
-
 render.wireframeMode = false
 wireframe = "fill"
 
 function render.drawCall(spritetbl, x, y, scale)
+    pallete = vrampallete.pallete
+
     colors = pallete
     -- wireframe for debug --
     if render.wireframeMode then
@@ -21,23 +20,24 @@ function render.drawCall(spritetbl, x, y, scale)
             color = colors[spritetbl[yp][xp]]
             r, g, b, a = love.math.colorFromBytes(color[1], color[2], color[3], color[4])
             if yp > 16 or xp > 16 then
-                return nil
+                return
             else
-                love.graphics.push()
-                love.graphics.setColor(r, g, b, a)
-                love.graphics.rectangle(wireframe, x + (xp * scale), y + (yp * scale), scale, scale)
-                love.graphics.pop()
+                if scale > 20 then
+                    return
+                else
+                    love.graphics.setColor(r, g, b, a)
+                    love.graphics.rectangle(wireframe, x + (xp * scale), y + (yp * scale), scale, scale)
+                end
             end
         end
     end
 end
 
 function render.rectangle(type, x, y, w, h, colorid)
+    pallete = vrampallete.pallete
     r,g,b,a = love.math.colorFromBytes(pallete[colorid][1], pallete[colorid][2], pallete[colorid][3], pallete[colorid][4])
-    love.graphics.push()
-        love.graphics.setColor(r, g, b, a)
-        love.graphics.rectangle(type, x, y, w, h)
-    love.graphics.pop()
+    love.graphics.setColor(r, g, b, a)
+    love.graphics.rectangle(type, x, y, w, h)
 end
 
 return render

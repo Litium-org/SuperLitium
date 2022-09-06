@@ -44,7 +44,8 @@ function vram.addSprite(sprite, x, y, scale, tag)
         texture = sprite,
         x = x,
         y = y,
-        scale = scale
+        scale = scale,
+        visible = true
     }
     if tag ~= nil then
         Sprite.tag = "$" .. string.sub(tag, 1, 4)
@@ -85,7 +86,6 @@ function vram.addText(text, x, y, scale, txtcolor, bgcolor)
         color1 = txtcolor,
         color2 = bgcolor
     }
-    print(Text.string)
     table.insert(buffer.text, Text)
 end
 
@@ -99,7 +99,9 @@ end
 
 function vram.renderSpriteBuffer()
     for k, sprdata in pairs(buffer.sprites) do
-        render.drawCall(buffer.sprites[k].texture, sprdata.x, sprdata.y, sprdata.scale)
+        if sprdata.visible == true then
+            render.drawCall(buffer.sprites[k].texture, sprdata.x, sprdata.y, sprdata.scale)
+        end
     end
 end
 
@@ -167,5 +169,37 @@ function vram.transformObject(tag, x, y, scale)
     end
 end
 
+function vram.remove(tag)
+    obj = findByTag("$" .. tag)
+
+    table.remove(buffer.sprites, obj.tag)
+end
+
+function vram.removeAll()
+    for spr = #buffer.sprites, 1, -1 do
+        if spr.tag ~= nil then
+            table.remove(buffer.sprites, spr.tag)
+        end
+    end
+end
+
+function vram.setSpriteVisible(tag, visible)
+    obj = findByTag("$" .. tag)
+    obj.visible = visible
+end
+
+-----------------------------------------------------
+-- conditional export --
+-----------------------------------------------------
+
+function vram.isSpriteVisible(tag)
+    obj = findByTag("$" .. tag)
+
+    if obj.visible == nil or obj.visible == false then
+        return false
+    else
+        return true
+    end
+end
 
 return vram
