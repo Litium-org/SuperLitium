@@ -9,7 +9,7 @@ function love.load()
     -- NXHardware API, for virtual hardware component comunications
     nxhardapi = {
         vram            = require 'src.core.virtualization.nx_vram',
-        debug           = require 'src.debug.nx_debug',
+        debug           = require 'src.debug.nx_debug'
     }
 
     -- main thread for install folders and system components (system not available now)
@@ -32,14 +32,4 @@ end
 
 function love.update(elapsed)
     pcall(cartdata(), update(elapsed))
-end
-
-function love.keypressed(k, scancode, isRepeat)
-    if k == "-" then
-        if isRepeat then
-            nxhardapi.debug.showCurrentColorPallete(true)
-        else
-            nxhardapi.debug.showCurrentColorPallete(false)
-        end
-    end
 end

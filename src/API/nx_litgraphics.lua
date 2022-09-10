@@ -62,16 +62,21 @@ function litgraphics.changePallete(colorTable)
     end
 end
 
+--- Delete all objects on screen (Sprites, Text objects and background elements)
+function litgraphics.removeAll()
+    nxhardapi.vram.removeAll()
+end
+
 --- Return screen width
 ---@return number @ Window width
 function litgraphics.windowWidth()
-    return vram.screen.width
+    return nxhardapi.vram.screen.width
 end
 
 --- Return screen height
 ---@return number @ Window height
 function litgraphics.windowHeight()
-    return vram.screen.height
+    return nxhardapi.vram.screen.height
 end
 
 return litgraphics

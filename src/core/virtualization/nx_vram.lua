@@ -25,13 +25,21 @@ vram.screen = {
 -- builtin function XD --
 -----------------------------------------------------
 
-function findByTag(tag)
+function findSpriteByTag(tag)
     for k, addr in pairs(buffer.sprites) do
         if addr.tag == tag then
-            return buffer.sprites[k]
+            return buffer.sprites[k], k
         end
     end
     --return nil
+end
+
+function findTextObjByTag(tag)
+    for k, addr in pairs(buffer.text) do
+        if addr.tag == tag then
+            return buffer.text[k], k
+        end
+    end
 end
 
 
@@ -48,7 +56,7 @@ function vram.addSprite(sprite, x, y, scale, tag)
         visible = true
     }
     if tag ~= nil then
-        Sprite.tag = "$" .. string.sub(tag, 1, 4)
+        Sprite.tag = "$" .. string.sub(tag, 1, 8)
     end
     table.insert(buffer.sprites, Sprite)
 end
@@ -77,15 +85,19 @@ function vram.addBgSprite(sprite, x, y, scale)
     table.insert(buffer.background.sprites, BgObject)
 end
 
-function vram.addText(text, x, y, scale, txtcolor, bgcolor)
+function vram.addText(text, x, y, scale, txtcolor, bgcolor, tag)
     Text = {
         string = text,
         x = x,
         y = y,
         scale = scale,
         color1 = txtcolor,
-        color2 = bgcolor
+        color2 = bgcolor,
+        visible = true
     }
+    if tag ~= nil then
+        Text.tag = "$" .. string.sub(tag, 1, 8)
+    end
     table.insert(buffer.text, Text)
 end
 
@@ -100,7 +112,9 @@ end
 function vram.renderSpriteBuffer()
     for k, sprdata in pairs(buffer.sprites) do
         if sprdata.visible == true then
-            render.drawCall(buffer.sprites[k].texture, sprdata.x, sprdata.y, sprdata.scale)
+            if sprdata.x < vram.screen.width or sprdata.y < vram.screen.height then
+                render.drawCall(buffer.sprites[k].texture, sprdata.x, sprdata.y, sprdata.scale)
+            end
         end
     end
 end
@@ -113,13 +127,19 @@ end
 
 function vram.renderBackgroundSpritesBuffer()
     for k, bgElement in pairs(buffer.background.sprites) do
-        render.drawCall(buffer.background.sprites[k].sprite, bgElement.x, bgElement.y, bgElement.scale)
+        if bgElement.x < vram.screen.width or bgElement.y < vram.screen.height then
+            render.drawCall(buffer.background.sprites[k].sprite, bgElement.x, bgElement.y, bgElement.scale)
+        end
     end
 end
 
 function vram.renderTextBuffer()
     for k, txtdata in pairs(buffer.text) do
-        text.drawStr(txtdata.string, txtdata.x, txtdata.y, txtdata.scale, txtdata.color1, txtdata.color2)
+        if txtdata.visible == true then
+            if txtdata.x < vram.screen.width or txtdata.y < vram.screen.height then
+                text.drawStr(txtdata.string, txtdata.x, txtdata.y, txtdata.scale, txtdata.color1, txtdata.color2)
+            end
+        end
     end
 end
 
@@ -160,32 +180,66 @@ end
 -----------------------------------------------------
 
 function vram.transformObject(tag, x, y, scale)
-    obj = findByTag("$" .. tag)
+    obj = findSpriteByTag("$" .. tag)
     if obj == nil then
         return false
     else
         obj.x = x
         obj.y = y
+        obj.scale = scale
     end
 end
 
-function vram.remove(tag)
-    obj = findByTag("$" .. tag)
+function vram.transformTextObject(tag, string, x, y, scale, colortxt, bgcolor)
+    txt = findTextObjByTag("$" .. tag)
+    if txt == nil then
+        return false
+    else
+        txt.string = string
+        txt.x = x
+        txt.y = y
+        txt.scale = scale
+        txt.color1 = colortxt
+        txt.color2 = bgcolor
+    end
+end
 
-    table.remove(buffer.sprites, obj.tag)
+function vram.killSpr(tag)
+    obj, k = findSpriteByTag("$" .. tag)
+    table.remove(buffer.sprites, k)
 end
 
 function vram.removeAll()
-    for spr = #buffer.sprites, 1, -1 do
-        if spr.tag ~= nil then
-            table.remove(buffer.sprites, spr.tag)
-        end
+    for vdata = #buffer.sprites, 1, -1 do
+        table.remove(buffer.sprites, vdata)
+    end
+    for bgSprites = #buffer.background.sprites, 1, -1 do
+        table.remove(buffer.background.sprites, bgSprites)
+    end
+    for bgRects = #buffer.background.rectangles, 1, -1 do
+        table.remove(buffer.background.rectangles, bgRects)
+    end
+    for txtData = #buffer.text, 1, -1 do
+        table.remove(buffer.text, txtData)
     end
 end
 
 function vram.setSpriteVisible(tag, visible)
-    obj = findByTag("$" .. tag)
+    obj = findSpriteByTag("$" .. tag)
     obj.visible = visible
+end
+
+function vram.setTextVisible(tag, visible)
+    txt = findTextObjByTag("$" .. tag)
+    txt.visible = visible
+end
+
+function vram.removeText(tag)
+    for k, v in pairs(buffer.text)  do
+        if v.tag == tag then
+            table.remove(buffer.text, buffer.text[k])
+        end
+    end
 end
 
 -----------------------------------------------------
@@ -193,12 +247,48 @@ end
 -----------------------------------------------------
 
 function vram.isSpriteVisible(tag)
-    obj = findByTag("$" .. tag)
+    obj = findSpriteByTag("$" .. tag)
 
     if obj.visible == nil or obj.visible == false then
         return false
     else
         return true
+    end
+end
+
+function vram.isTextVisible(tag)
+    txt = findTextObjByTag("$" .. tag)
+
+    if txt.visible == nil or txt.visible == false then
+        return false
+    else
+        return true
+    end
+end
+
+function vram.entityExist(tag)
+    obj = findSpriteByTag("$" .. tag)
+
+    if obj.x ~= nil then
+        return false
+    else
+        return true
+    end
+end
+
+-----------------------------------------------------
+-- Private export --
+-----------------------------------------------------
+
+function vram.ListTags(type)
+    if type == "sprite" or "spr" then
+        tags = {}
+        for k, spr in pairs(buffer.sprites) do
+            if spr.tag ~= nil then
+                table.insert(tags, spr.tag)
+            end
+        end
+        return tags
     end
 end
 

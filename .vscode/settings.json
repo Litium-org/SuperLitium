@@ -8,6 +8,7 @@
         "loader" : "project",
         "engine" : "controller",
         "pl" : "plugin",
+        "drivers" : "config",
         "system" : "controller",
         "virtualization" : "middleware",
         "installer" : "download",

@@ -1,4 +1,5 @@
 function create()
+    a = 0
     colors = {
         {0,0,0,0},	                -- [1]  transparent
         {250,250,250},
@@ -34,12 +35,14 @@ function create()
     ms = 0
     state = "bootloader"
     --litiumapi.litgraphics.changePallete(colors)
-    litiumapi.litgraphics.newSprite(litlogo, 90, 90, 10)
+    litiumapi.litgraphics.newSprite(litlogo, 90, 90, 10, "logo")
+    litiumapi.litgraphics.newText(tostring(a), 190, 190, 5, 3, 1)
 end
 
 function update(elapsed)
     ms = ms + 1 * elapsed
-    if love.keyboard.isDown("u") then
-        litiumapi.litgraphics.changePallete(colors)
+    a = a + 1
+    if ms > 4 then
+        litiumapi.litentity.killSprite("logo")
     end
 end
