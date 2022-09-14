@@ -6,7 +6,8 @@ keys = {
     "0","1","2","3","4","5","6","7","8","9",
     "!","=","$","(",")",",",".",":",";","+","-","/","|","<",">","?","[","]",
     "space","backspace","return", "lshift", "rshift", "rctrl", "lctrl",
-    "insert", "home", "delete", "end", "pageup", "pagedown" 
+    "insert", "home", "delete", "end", "pageup", "pagedown",
+    "up", "down", "left", "right" 
 }
 
 function keyboard.isKeyDown(key)

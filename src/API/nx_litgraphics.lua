@@ -45,8 +45,9 @@ end
 ---@param scale number      @ set the Pixel scale of text
 ---@param txtColor number   @ set the text color (1-17)
 ---@param BgColor number    @ set the background of the text color (1-17)
-function litgraphics.newText(string, x, y, scale, txtColor, BgColor)
-    nxhardapi.vram.addText(string, x, y, scale, txtColor, BgColor)
+---@param Tag string        @ This tag is used to locate object in memory and change parameters
+function litgraphics.newText(string, x, y, scale, txtColor, BgColor, tag)
+    nxhardapi.vram.addText(string, x, y, scale, txtColor, BgColor, tag)
 end
 
 --- Change the default color pallete

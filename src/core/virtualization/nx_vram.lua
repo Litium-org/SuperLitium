@@ -206,7 +206,12 @@ end
 
 function vram.killSpr(tag)
     obj, k = findSpriteByTag("$" .. tag)
-    table.remove(buffer.sprites, k)
+    if not obj then
+        return
+    else
+
+        table.remove(buffer.sprites, k)
+    end
 end
 
 function vram.removeAll()
@@ -237,7 +242,7 @@ end
 function vram.removeText(tag)
     for k, v in pairs(buffer.text)  do
         if v.tag == tag then
-            table.remove(buffer.text, buffer.text[k])
+            table.remove(buffer.text, k)
         end
     end
 end

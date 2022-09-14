@@ -10,9 +10,7 @@ folderToInstall = {
     "carts",
     "bin",
     "disks",
-    "disks/A",
-    "disks/C",
-    "disks/C/user"
+    "data"
 }
 
 function verifyFolderExist()

@@ -12,7 +12,8 @@
         "system" : "controller",
         "virtualization" : "middleware",
         "installer" : "download",
-        "install" : "download"
+        "install" : "download",
+        "lock" : "keys"
     },
     "material-icon-theme.files.associations": {
         "conf.lua" : "settings",
