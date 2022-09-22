@@ -9,6 +9,9 @@ makeDir = love.filesystem.createDirectory
 folderToInstall = {
     "carts",
     "bin",
+    "bin/data",
+    "bin/apps",
+    "bin/server",
     "disks",
     "data"
 }

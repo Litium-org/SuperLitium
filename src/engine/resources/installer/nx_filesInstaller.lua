@@ -2,11 +2,17 @@ fileinstaller = {}
 
 utils = require 'src.engine.resources.nx_utils'
 
+filesToInstall = {
+    ".boot",
+}
+
 function fileinstaller.install()
     -- main disk locate from bios -- 
-    if not utils.exist("file", ".boot") then
-        file = love.filesystem.newFile(".boot", "w")
-        file:close()
+    for f = 1, #filesToInstall, 1 do
+        if not utils.exist("file", filesToInstall[f]) then
+            file = love.filesystem.newFile(filesToInstall[f], "w")
+            file:close()
+        end
     end
 end
 

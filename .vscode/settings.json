@@ -13,13 +13,15 @@
         "virtualization" : "middleware",
         "installer" : "download",
         "install" : "download",
-        "lock" : "keys"
+        "lock" : "keys",
+        "sprites" : "images"
     },
     "material-icon-theme.files.associations": {
         "conf.lua" : "settings",
         ".litversion" : "settings", 
         "push.lua" : "git",
         "push.cmd" : "git",
-        ".restore" : "search"
+        ".restore" : "search",
+        "*.spr" : "image"
     },
 }

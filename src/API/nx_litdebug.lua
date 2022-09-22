@@ -7,8 +7,4 @@ function litdebug.viewWireframe(bool)
     text.wireframeMode = bool
 end
 
-function litdebug.list()
-    
-end
-
 return litdebug

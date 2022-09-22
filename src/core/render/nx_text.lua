@@ -36,7 +36,7 @@ function draw(spritetbl, x, y, scale, TextColorID, BackgroundColorID)
     colorsText = vrampallete.pallete
 
     -- wireframe for debug --
-    if render.wireframeMode then
+    if text.wireframeMode then
         wireframe = "line"
     else
         wireframe = "fill"

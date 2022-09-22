@@ -22,5 +22,15 @@ function network.downloadFile(url, filename)
     file:close()
 end
 
+function network.newRequest(url)
+    req = {
+        url = url,
+        method = 'GET'
+    }
+
+    code, content = https.request(req)
+    return content, code
+end
+
 
 return network

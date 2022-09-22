@@ -1,15 +1,16 @@
 litgraphics = {}
 
 vramPallete = require 'src.core.virtualization.nx_vramPallete'
+Render = require 'src.core.render.nx_render'
+text = require 'src.core.render.nx_text'
 
 ---Create a new Object and can be transformed in Memory
 ---@param sprite table      @ The table with sprite code
 ---@param x number          @ X position for place sprite
 ---@param y number          @ Y position for place sprite
 ---@param scale number      @ Scale of pixels
----@param tag string        @ This tag is used to locate object in memory and change parameters
-function litgraphics.newSprite(sprite, x, y, scale, tag)
-    nxhardapi.vram.addSprite(sprite, x, y, scale, tag)
+function litgraphics.newSprite(sprite, x, y, scale)
+    Render.drawCall(sprite, x, y, scale)
 end
 
 --- Create new rectangle (Used for background elements)
@@ -20,22 +21,13 @@ end
 ---@param h number          @ set the height of the rectangle
 ---@param colorid number    @ set the rectangle color (1-17)
 function litgraphics.rect(filltype, x, y, w, h, colorid)
-    nxhardapi.vram.addBgRect(filltype, x, y, w, h, colorid)
-end
-
---- Create a new sprite but place as background
----@param sprite table      @ The table with sprite code
----@param x number          @ X position for place sprite
----@param y number          @ Y position for place sprite
----@param scale number      @ Sprite pixel scale
-function litgraphics.newBackgroundSprite(sprite, x, y, scale)
-    nxhardapi.vram.addBgSprite(sprite, x, y, scale)
+    Render.rectangle(filltype, x, y, w, h, colorid)
 end
 
 --- Change the background color
 ---@param id number     @ Color id based on 1-17 available colors
 function litgraphics.backgroundColor(id)
-    nxhardapi.vram.sceneColor(id)
+    Render.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight(), id)
 end
 
 --- Create a new text
@@ -45,9 +37,8 @@ end
 ---@param scale number      @ set the Pixel scale of text
 ---@param txtColor number   @ set the text color (1-17)
 ---@param BgColor number    @ set the background of the text color (1-17)
----@param Tag string        @ This tag is used to locate object in memory and change parameters
-function litgraphics.newText(string, x, y, scale, txtColor, BgColor, tag)
-    nxhardapi.vram.addText(string, x, y, scale, txtColor, BgColor, tag)
+function litgraphics.newText(string, x, y, scale, txtColor, BgColor)
+    text.drawStr(string, x, y, scale, txtColor, BgColor)
 end
 
 --- Change the default color pallete
@@ -63,21 +54,16 @@ function litgraphics.changePallete(colorTable)
     end
 end
 
---- Delete all objects on screen (Sprites, Text objects and background elements)
-function litgraphics.removeAll()
-    nxhardapi.vram.removeAll()
-end
-
 --- Return screen width
 ---@return number @ Window width
 function litgraphics.windowWidth()
-    return nxhardapi.vram.screen.width
+    return love.graphics.getWidth()
 end
 
 --- Return screen height
 ---@return number @ Window height
 function litgraphics.windowHeight()
-    return nxhardapi.vram.screen.height
+    return love.graphics.getHeight()
 end
 
 return litgraphics

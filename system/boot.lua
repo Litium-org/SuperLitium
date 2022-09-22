@@ -1,36 +1,93 @@
-function create()
+function init()
     math.randomseed(os.clock())
-    rand = math.random(10, 1)
-    
-    -- resources --
-    shell = require 'system.resources.shell'
+    shell = require 'system.resources.nx_shell'
+    version = require 'system.resources.nx_version'
+    storage = require 'system.resources.nx_storage-dvr'
+    mouse = require 'src.core.virtualization.drivers.nx_mouse-dvr'
+    debug = require 'src.debug.nx_debug'
 
-    TimeElapsed = 0
+    version.getCurrentVersion()
+
+    screenCenterX = litiumapi.litgraphics.windowWidth() / 2
+    screenCenterY = litiumapi.litgraphics.windowHeight() / 2
+
+    timeElapsed = 0
+    rand = math.random(10, 1)
     state = "bootloader"
 
-    -- secret logo <3 --
-    if rand < 4 then
-        litiumapi.litgraphics.newSprite(shell.icons.litlogoEasterEgg, 90, 90, 10, "logo")
-    else
-        litiumapi.litgraphics.newSprite(shell.icons.litlogo, 90, 90, 10, "logo")
+    cursorX = screenCenterX
+    cursorY = screenCenterY
+    cursorSpeed = 200
+    hold = 0
+end
+
+function render()
+    if state == "upgrade" then
+        
     end
 
-    litiumapi.litgraphics.newText("Welcome to litium", 200, 200, 5, 3, 1, "logo")
+    if state == "bootloader" then
+        if rand < 4 then
+            litiumapi.litgraphics.newSprite(shell.icons.bootloader.litlogoEasterEgg, screenCenterX - 50, screenCenterY - 80, 8)
+        else
+            litiumapi.litgraphics.newSprite(shell.icons.bootloader.litlogo, screenCenterX - 50, screenCenterY - 80, 8)
+        end
+    end
+
+    if state == "desktop" then
+        litiumapi.litgraphics.backgroundColor(10)
+        litiumapi.litgraphics.rect("fill", 0, 0, 1280, 64, 11)
+        litiumapi.litgraphics.rect("fill", 0, litiumapi.litgraphics.windowHeight() - 64, 1280, 64, 11)
+        -----------------------------------------------------------------------------------------------
+        litiumapi.litgraphics.newSprite(shell.icons.desktop.deskicon.normal, 10, 10, 3)
+        litiumapi.litgraphics.newSprite(shell.icons.desktop.config, 70, 10, 3)
+        litiumapi.litgraphics.newSprite(shell.icons.desktop.storeIcon, 140, 10, 3)
+        -----------------------------------------------------------------------------------------------
+        --litiumapi.litgraphics.newSprite(shell.icons.desktop.cursor, mx - 30, my - 30, 3)
+        litiumapi.litgraphics.newSprite(shell.icons.desktop.cursor, cursorX - 3 * 10, cursorY - 3 * 10, 3)
+    end
+
+    if state == "love" then
+        litiumapi.litgraphics.newSprite(shell.icons.desktop.donate, screenCenterX - 80, screenCenterY - 80, 8)
+    end
 end
 
 function update(elapsed)
-    print(TimeElapsed)
+    timeElapsed = timeElapsed + 1 * elapsed
+    msElapsed = math.floor(timeElapsed)
     if state == "bootloader" then
-        TimeElapsed = TimeElapsed + 1 * elapsed
-        if math.floor(TimeElapsed) > 4 then
-            litiumapi.litentity.killSprite("logo")
-            litiumapi.litentity.destroyText("logo")
+        if msElapsed == 3 then
             state = "desktop"
+            litiumapi.litgraphics.changePallete(shell.pallete.neos16)
+            timeElapsed = 0
         end
     end
     if state == "desktop" then
-        if math.floor(TimeElapsed) == 0 then
-            litiumapi.litgraphics.changePallete(shell.pallete.bubblegum)
+        mx, my = mouse.getMousePos()
+
+        if litiumapi.litinput.isKeyDown("up") then
+            cursorY = cursorY - cursorSpeed * elapsed
         end
+        if litiumapi.litinput.isKeyDown("down") then
+            cursorY = cursorY + cursorSpeed * elapsed
+        end
+        if litiumapi.litinput.isKeyDown("left") then
+            cursorX = cursorX - cursorSpeed * elapsed
+        end
+        if litiumapi.litinput.isKeyDown("right") then
+            cursorX = cursorX + cursorSpeed * elapsed
+        end
+        if litiumapi.litinput.isKeyDown("return") then
+            hold = hold + 1
+        else
+            hold = 0
+        end
+
+        if hold > 20 then
+            state = "love"
+        end
+    end
+    if state == "love" then
+        litiumapi.litgraphics.changePallete(shell.pallete.secret)
     end
 end

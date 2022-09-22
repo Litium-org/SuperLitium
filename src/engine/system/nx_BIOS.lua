@@ -11,8 +11,18 @@ function bios.init()
     if cartname == nil then
         return cartloader.loadCart("system/boot.lua")
     else
-        return cartloader.loadCart("carts/" .. cartname .. "/boot.lua")
+        romSize = love.filesystem.getInfo("carts/" .. cartname .. "/boot.lua", "file")
+        if romSize.size < 131072 then
+            return cartloader.loadCart("carts/" .. cartname .. "/boot.lua")            
+        end
+
     end
+end
+
+function bios.getFileName()
+    bootfile = io.open(utils.saveDirectory() .. "/.boot", "r")
+    cartname = bootfile:read()
+    return cartname
 end
 
 return bios

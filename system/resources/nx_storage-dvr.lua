@@ -1,18 +1,19 @@
 storage = {}
 
 json = require 'libraries.json'
-base64 = require 'libraries.base64'
 basexx = require 'libraries.basexx'
 utils = require 'src.engine.resources.nx_utils'
+bios = require 'src.engine.system.nx_bios'
 
 storage.slots = {}
-storage.importedSprites = {}
 
-
+--------------------------------------------------------------------------------
+-- Functions for saving and loading system
+--------------------------------------------------------------------------------
 function storage.createSlot(slotTag)
     Slot = {
-        tag = string.sub(slotTag, 1, 8),
-        registeredSize = 65536,
+        tag = string.sub(slotTag, 1, 20),
+        registeredSize = 262144,
     }
 
     if #storage.slots > 5 then
@@ -23,8 +24,8 @@ function storage.createSlot(slotTag)
         else
             slotId = #storage.slots
         end
-        slotFile, errorstr = love.filesystem.newFile("data/slot_" .. slotId .. ".lds", "w")
-        Slot.filepath = "data/slot_" .. slotId .. ".lds"
+        slotFile, errorstr = love.filesystem.newFile("bin/data/slot_" .. slotId .. ".lds", "w")
+        Slot.filepath = "bin/data/slot_" .. slotId .. ".lds"
         slotFile:close()
         table.insert(storage.slots, Slot)
         return 'sucess'
@@ -74,5 +75,6 @@ function storage.getFromSlot(slotTag)
         end
     end
 end
+
 
 return storage
