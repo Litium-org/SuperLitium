@@ -1,0 +1,4 @@
+cmake -Bbuild -S. -A x64 -DCMAKE_INSTALL_PREFIX=%CD%\install
+cmake --build build --config Release --target install
+
+#no idea how to make a cmd command about this
