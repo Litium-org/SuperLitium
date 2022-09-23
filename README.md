@@ -1,24 +1,33 @@
-# LitiumVM
-> Codename : lunaris, mini os and game engine made with love2D.
+![](https://raw.githubusercontent.com/Litium-org/SuperLitium/master/assets/SuperLitiumBanner.png)
 
-[![Lua language](./images/lua-badge.png)](https://www.lua.org)
+# SuperLitium
+Improved version from the original [Litium](https://github.com/Litium-org/Litium).
+A cool imaginary and retro styled game console and game framework
 
-# About Project
-LitiumVM (codename lunaris) is a fantasy console and game framework inspired by Atari 2600.
-Is 100% written in lua and has his own API to make your own games.
-Has a graphic handler, sound writter, and json reader.
-
-This engine is in development, started at 13/04/2022.
-
-You can download this source code and build it on your machine.
+## Features
+- [ :fa-wifi: ] Version checking system
+- [ :fa-laptop: ] Better OS with improved UI
+- [ :fa-folder: ] Save system 
+- [ :fa-paint-brush: ] Customizable OS with colors
+- [ :fa-tint: ] - Support to 25 colors (+1 as transparent)
+- and much more
 
 ### STATBILITY WARNING:
-> This project is constantly development, so scripts and functions can be added, removed, renamed or moved to other parts, please check for the most recently version of source to not have compatibility issues.
-	
-## Building Windows
-- [ 1 ] - Make sure you have Love2D 11.4 Mysterious Mysteries installed and setup with %path%, to see if you have set up correclty open your terminal and type "love" if it open a screen with no game means it all working correctly.
+> This project is constantly development, so scripts and functions can be added, removed, renamed  or moved to other parts.
+>please check for the most recently version of source to not have compatibility issues.
 
-- [ 2 ] - on your terminal run boot.cmd or click 2 times on .cmd file to run the current version of the project.
+#### Supported plataforms
+- :fa-windows: : :tw-2705: (Supported)
+- :fa-android: : :tw-274c: (Not supported)
+- :fa-linux: : :tw-26a0: (Unstable)
+- :fa-apple: : :tw-274c: (Not supported)
+
+# Building Windows
+- [ :tw-31-20e3: ] - Make sure you have Love2D 11.4 Mysterious Mysteries installed and setup with %path%, to see if you have set up correclty open your terminal and type "love" if it open a screen with no game means it all working correctly.
+
+- [ :tw-32-20e3: ] - on your terminal run boot.cmd or click 2 times on .cmd file to run the current version of the project.
+---
+
 
 ## Building Linux
 <p> Install <strong>love ^11.4 </strong>  
@@ -51,19 +60,22 @@ Then run setup.sh
 ./setup.sh
 ```
 </p>
+---
 
 # Contributions
 You can contribute with the development of engine by clonning this repository with the most recent version of code and make your changes.
 
+---
 Everyone who helps will be credited here (social media or Github page)
 
 [Here the list of eveyone who contribute with engine development](./CONTRIBUTORS.MD)
+---
+# Used Libraries
+- ### [Lualzw - Rochet2](https://github.com/Rochet2/lualzw)
+- ### [Json - actboy168](https://github.com/actboy168/json.lua)
+- ###[Basexx - aiq](https://github.com/aiq/basexx)
+- ###[lua-https - Love2D](https://github.com/love2d/lua-https)
 
-# Library credits
-This engine use some third party libraries, here the credits for they amazing work :D
-> ### [HUMP - vrld](https://github.com/vrld/hump)
-> ### [Json.lua - rxi](https://github.com/rxi/json.lua)
-> ### [Penlight lib - lunarmodules](https://github.com/lunarmodules/Penlight)
-> ### [Json.lua (New Implementation) - Actboy168](https://github.com/actboy168/json.lua)
-> ### [Chrono - a327ex](https://github.com/a327ex/chrono/blob/master/Timer.lua)
-> ### [lBase64 - iskolbin](https://github.com/iskolbin/lbase64)
+---
+## Social media
+###[Discord server](https://discord.gg/gcscYemUeY)

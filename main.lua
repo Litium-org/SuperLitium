@@ -5,6 +5,7 @@ function love.load()
     cartloader          = require 'src.core.virtualization.nx_cartloader'
     bios                = require 'src.engine.system.nx_bios'
     nativelocks         = require 'src.core.misc.nx_nativelocks'
+    https               = require 'libraries.https'
 
     NativeVersion = "0.0.8"
 
