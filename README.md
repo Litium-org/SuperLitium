@@ -14,7 +14,7 @@ A cool imaginary and retro styled game console and game framework
 
 ### STATBILITY WARNING:
 > This project is constantly development, so scripts and functions can be added, removed, renamed  or moved to other parts.
->please check for the most recently version of source to not have compatibility issues.
+> please check for the most recently version of source to not have compatibility issues.
 
 #### Supported plataforms
 - :fa-windows: : :tw-2705: (Supported)
@@ -73,9 +73,9 @@ Everyone who helps will be credited here (social media or Github page)
 # Used Libraries
 - ### [Lualzw - Rochet2](https://github.com/Rochet2/lualzw)
 - ### [Json - actboy168](https://github.com/actboy168/json.lua)
-- ###[Basexx - aiq](https://github.com/aiq/basexx)
-- ###[lua-https - Love2D](https://github.com/love2d/lua-https)
+- ### [Basexx - aiq](https://github.com/aiq/basexx)
+- ### [lua-https - Love2D](https://github.com/love2d/lua-https)
 
 ---
 ## Social media
-###[Discord server](https://discord.gg/gcscYemUeY)
+### [Discord server](https://discord.gg/gcscYemUeY)
