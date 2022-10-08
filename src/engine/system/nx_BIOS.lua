@@ -4,7 +4,6 @@ utils = require 'src.engine.resources.nx_utils'
 
 function bios.init()
     -- look for boot file --
-    print(utils.saveDirectory() .. "/.boot")
     bootfile = io.open(utils.saveDirectory() .. "/.boot", "r")
     cartname = bootfile:read()
 

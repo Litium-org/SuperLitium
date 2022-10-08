@@ -49,7 +49,7 @@ function litgraphics.changePallete(colorTable)
         print("Pallete can't be higher than 17 colors at same time")
         love.event.quit()
     else
-        print("color changed")
+        --print("color changed")
         vramPallete.pallete = colorTable
     end
 end

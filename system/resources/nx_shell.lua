@@ -20,25 +20,6 @@ shell = {
             {149,105,200},
             {186,181,170},
             {148,142,130}
-        },
-        secret = {
-            {0,0,0,0},	                -- [1]  transparent
-            {19,19,85},	                -- [2]  
-            {255,218,64},	            -- [3]  
-            {224,212,255},	            -- [4]  
-            {178,113,18},	            -- [5]  
-            {13,13,13},	                -- [6]  
-            {54,54,54},	                -- [7]  
-            {133,88,21},	            -- [8]  
-            {255,204,252},	            -- [9]  
-            {29,29,29},	                -- [10]  
-            {129,129,129},	            -- [11]  
-            {255,255,255},	            -- [12]  
-            {0,130,130},	            -- [13]  
-            {0,255,0},	                -- [14]  
-            {0,130,0},	                -- [15]  
-            {255,255,0},	            -- [16]  
-            {130,130,0}	                -- [17]
         }
     },
     icons = {
@@ -66,36 +47,17 @@ shell = {
                 {1,1,3,3,3,3,3,1,1},
             },
         },
-        desktop = {
-            background = graphics.importSpriteFile("system/resources/sprites/bg.spr"),
-            cursor = graphics.importSpriteFile("system/resources/sprites/cursor.spr"),
-            donate = graphics.importSpriteFile("system/resources/sprites/love.spr"),
-            config = graphics.importSpriteFile("system/resources/sprites/config.spr"),
-            deskicon = {
-                normal = graphics.importSpriteFile("system/resources/sprites/deskicon_lit.spr"),
-                hover = graphics.importSpriteFile("system/resources/sprites/deskicon_lit_hover.spr"),
-            },
-            storeIcon = { 
-                {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,},
-                {1,1,1,1,1,1,2,2,2,2,1,1,1,1,1,1,},
-                {1,1,1,1,2,2,1,1,1,1,2,2,1,1,1,1,},
-                {1,1,1,2,1,1,1,1,1,1,1,1,2,1,1,1,},
-                {1,1,1,2,1,1,1,1,1,1,1,1,2,1,1,1,},
-                {1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,},
-                {1,2,8,8,8,8,8,8,8,8,8,8,8,8,2,1,},
-                {1,2,8,7,7,7,7,7,9,9,9,9,9,8,2,1,},
-                {1,2,8,7,7,7,7,2,9,9,9,9,9,8,2,1,},
-                {1,2,8,7,7,7,7,2,9,9,9,9,9,8,2,1,},
-                {1,2,10,11,11,11,11,2,13,13,13,13,13,12,2,1,},
-                {1,2,10,11,11,11,11,2,2,2,13,13,13,12,2,1,},
-                {1,2,10,11,11,11,11,11,13,13,13,13,13,12,2,1,},
-                {1,2,10,10,10,10,10,10,12,12,12,12,12,12,2,1,},
-                {1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,},
-                {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,}
-            }
-        }
+        desktop = {}
     }
 }
+
+shell.icons.desktop.arrow_r = images.importSpriteFile("system/resources/sprites/arrow_r.spr")
+shell.icons.desktop.arrow_l = images.importSpriteFile("system/resources/sprites/arrow_l.spr")
+shell.icons.desktop.config = images.importSpriteFile("system/resources/sprites/config.spr")
+shell.icons.desktop.deskicon = images.importSpriteFile("system/resources/sprites/deskicon_lit.spr")
+shell.icons.desktop.storeIcon = images.importSpriteFile("system/resources/sprites/store_icon.spr")
+shell.icons.desktop.disk = images.importSpriteFile("system/resources/sprites/disk.spr")
+
 
 
 return shell

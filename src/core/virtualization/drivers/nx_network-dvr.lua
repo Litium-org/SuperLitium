@@ -4,11 +4,7 @@ utils = require 'src.engine.resources.nx_utils'
 
 function network.downloadFile(url, filename)
     -- retrieve the content of a URL
-    reqData = {
-        url = url,
-        method = "GET"
-    }
-    local code, body = https.request(reqData)
+    local code, body = https.request(url, "GET")
     --print(body)
     if not body then 
         print(code)
@@ -23,12 +19,7 @@ function network.downloadFile(url, filename)
 end
 
 function network.newRequest(url)
-    req = {
-        url = url,
-        method = 'GET'
-    }
-
-    code, content = https.request(req)
+    code, content = https.request(url, "GET")
     return content, code
 end
 

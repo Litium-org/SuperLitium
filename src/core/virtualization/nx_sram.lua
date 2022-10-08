@@ -3,22 +3,21 @@ sram = {}
 soundTH = require 'src.core.virtualization.drivers.nx_sound-drv'
 
 sram.buffer = {
-    toneSources = {},
     soundSources = {}
 }
 
-function sram.newToneSource(tag, freq, waveLenght, type)
-    Tone = {
-        frequency = freq,
-        lenght = waveLenght,
-        type = type,
-        soundSource = soundTH.newTone(Tone.frequency, Tone.lenght, Tone.type)
+function sram.newToneSource(tag, soundTable)
+    SoundSource = {
+        tag = "$" .. string.sub(tag, 1, 8),
+        sndtbl = soundTable
     }
 
-    table.insert(sram.buffer.toneSources, Tone)
+    if #sram.buffer.soundSources < 5 then
+        table.insert(sram.buffer.soundSources, SoundSource)
+    end
 end
 
-function sram.playTone()
+function sram.play(tag, loop)
     
 end
 

@@ -4,10 +4,14 @@ function love.load()
     litiumapi           = require 'src.API.nx_litiumAPI'
     cartloader          = require 'src.core.virtualization.nx_cartloader'
     bios                = require 'src.engine.system.nx_bios'
+    switch              = require 'libraries.switch'
     nativelocks         = require 'src.core.misc.nx_nativelocks'
-    https               = require 'libraries.https'
 
-    NativeVersion = "0.0.8"
+
+    print("         SuperLitium")
+
+
+    --https               = require 'libraries.https'
 
     -- lock some commands XDDD
     nativelocks.lock()
@@ -17,7 +21,7 @@ function love.load()
 
     -- cartdrive initialization
     cartdata = bios.init()
-    
+
     -- call init function
     pcall(cartdata(), init())
 end

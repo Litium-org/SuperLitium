@@ -1,5 +1,9 @@
 vram = {}
 
+----------------------------------------------------------------------
+--   DEPRECATED MODULE (Used on 0.0.2 AddressEntityBased Model)     --
+----------------------------------------------------------------------
+
 render = require 'src.core.render.nx_render'
 text = require 'src.core.render.nx_text'
 

@@ -1,4 +1,7 @@
-utils = {}
+utils = {
+    screenWidth = love.graphics.getWidth(),
+    screenHeight = love.graphics.getHeight()
+}
 
 getInfo = love.filesystem.getInfo
 

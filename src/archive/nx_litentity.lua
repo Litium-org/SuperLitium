@@ -1,5 +1,9 @@
 litentity = {}
 
+----------------------------------------------------------------------
+--   DEPRECATED MODULE (Used on 0.0.3 AddressEntityBased Model)     --
+----------------------------------------------------------------------
+
 --- Change some object properties using a Tag (Address)
 ---@param tag string    @ Adress of object 
 ---@param x number      @ new X position
