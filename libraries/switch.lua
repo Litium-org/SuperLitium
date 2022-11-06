@@ -1,5 +1,5 @@
-switch = function(param, case_table)
-    local case = case_table[param]
+switch = function(var, case_table)
+    local case = case_table[var]
     if case then 
         return case() 
     end

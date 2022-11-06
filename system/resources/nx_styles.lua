@@ -22,6 +22,8 @@ styles = {
                 --=[hub]=--
             litiumapi.litgraphics.backgroundColor(11)
             litiumapi.litgraphics.newText(txt, (utils.screenWidth / 2) - (#txt * 16), 90, 4, 2, 1)
+
+            litiumapi.litgraphics.newText("Version " .. tostring(NativeVersion), 10, 700, 2, 2, 1)
             litiumapi.litgraphics.rect("fill", (utils.screenWidth / 2) - 160, (utils.screenHeight / 2) - 160, 320, 320, 10)
         end,
         gamelib = function()

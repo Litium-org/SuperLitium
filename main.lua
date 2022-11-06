@@ -23,14 +23,14 @@ function love.load()
     cartdata = bios.init()
 
     -- call init function
-    pcall(cartdata(), init())
+    pcall(cartdata(), _init())
 end
 
 function love.draw()
     love.graphics.clear()
-    pcall(cartdata(), render())
+    pcall(cartdata(), _render())
 end
 
 function love.update(elapsed)
-    pcall(cartdata(), update(elapsed))
+    pcall(cartdata(), _update(elapsed))
 end

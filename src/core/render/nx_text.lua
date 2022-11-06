@@ -48,7 +48,12 @@ function draw(spritetbl, x, y, scale, TextColorID, BackgroundColorID)
                 if BackgroundColorID == nil then
                     setColor(0, 0, 0, 0)
                 else
-                    r, g, b, a = love.math.colorFromBytes(colorsBG[BackgroundColorID][1], colorsBG[BackgroundColorID][2], colorsBG[BackgroundColorID][3], colorsBG[BackgroundColorID][4])
+                    r, g, b, a = love.math.colorFromBytes(
+                        colorsBG[BackgroundColorID][1], 
+                        colorsBG[BackgroundColorID][2], 
+                        colorsBG[BackgroundColorID][3], 
+                        colorsBG[BackgroundColorID][4]
+                    )
                     setColor(r, g, b, a)
                 end
             else
