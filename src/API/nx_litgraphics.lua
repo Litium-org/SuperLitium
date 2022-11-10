@@ -45,12 +45,16 @@ end
 ---@param colorTable table  @ Table with colors in RGBA mode : {255,255,255,255}
 function litgraphics.changePallete(colorTable)
     love.graphics.clear()
-    if #colorTable > 17 then
-        print("Pallete can't be higher than 17 colors at same time")
-        love.event.quit()
+    if colorTable == nil then
+        vramPallete.pallete = vramPallete.default
     else
-        --print("color changed")
-        vramPallete.pallete = colorTable
+        if #colorTable > 17 then
+            print("Pallete can't be higher than 17 colors at same time")
+            love.event.quit()
+        else
+            --print("color changed")
+            vramPallete.pallete = colorTable
+        end
     end
 end
 

@@ -29,6 +29,12 @@ styles = {
         gamelib = function()
             litiumapi.litgraphics.backgroundColor(7)
             litiumapi.litgraphics.rect("fill", 20, 20, (utils.screenWidth / 2) - 20, utils.screenHeight - 40, 6)
+        end,
+        config = function()
+            litiumapi.litgraphics.backgroundColor(5)
+            litiumapi.litgraphics.newText("Settings", 20, 10, 3, 3, 1)
+            litiumapi.litgraphics.newText("[ESC] - save and back]", 20, 690, 3, 3, 1)
+            litiumapi.litgraphics.rect("fill", 20, 40, utils.screenWidth - 40, utils.screenHeight - 80, 4)
         end
     }
 }

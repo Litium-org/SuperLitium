@@ -15,7 +15,6 @@ function bios.init()
         if romSize.size < 131072 then
             return cartloader.loadCart("carts/" .. cartname .. "/boot.lua")            
         end
-
     end
 end
 

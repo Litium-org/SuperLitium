@@ -34,3 +34,7 @@ end
 function love.update(elapsed)
     pcall(cartdata(), _update(elapsed))
 end
+
+function love.keypressed(k)
+    pcall(cartdata(), _keydown(k))
+end

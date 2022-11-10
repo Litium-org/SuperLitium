@@ -15,8 +15,14 @@ function _init()
     gamelib_cursor_pos = 22
     gamelib_cursor = 1
     gamelib_cursor_maxY = 0
+    bootloader_isGameLoaded = false
+    config_cursor = 1
+    config_cursor_y = 60
+    config_cursor_x = 1
     --------------=[ Modules ]=------------------- 
     shell = require 'system.resources.nx_shell'
+    settings = require 'system.resources.nx_settings'
+    Storage = require 'system.resources.nx_storage-dvr'
     version = require 'system.resources.nx_version'
     styles = require 'system.resources.nx_styles'
     ---------------------------------
@@ -31,9 +37,18 @@ function _render()
     {
         ["bootloader"] = function()
             styles.misc.bootloader()
+            if bootloader_isGameLoaded then
+                strtxt = "Powered with SuperLitium"
+                litiumapi.litgraphics.newText(strtxt, (utils.screenWidth / 2) - (#strtxt * 5), 120, 4, 3, 1)
+            end
         end,
         ["oldversion"] = function()
             styles.misc.oldversion()
+        end,
+        ["config"] = function()
+            styles.desktop.config()
+            settings.render()
+            litiumapi.litgraphics.newSprite(shell.icons.desktop.arrow_l, 30, config_cursor_y, 1)
         end,
         ["desktop"] = function()
             styles.desktop.data()
@@ -64,6 +79,7 @@ function _render()
             gamelib_cursor_maxY = txtY
         end
     })
+    litiumapi.litgraphics.newText(tostring(config_cursor_x), 0, 0, 1, 3, 1)
 end
 
 function _update(elapsed)
@@ -75,11 +91,19 @@ function _update(elapsed)
             if msElapsed == 3 then
                 if isVersionDifferent then
                     state = "oldversion"
+                elseif bootloader_isGameLoaded then
+                    love.load()
                 else
                     state = "desktop"
                     litiumapi.litgraphics.changePallete(shell.pallete.neos16)
                     timeElapsed = 0
                 end
+            end
+        end,
+
+        ["oldversion"] = function()
+            if litiumapi.litinput.isKeyDown("return") then
+                love.event.quit()
             end
         end,
 
@@ -104,12 +128,42 @@ function _update(elapsed)
             if gamelib_cursor > #gamenames then
                 gamelib_cursor = #gamenames
             end
+        end,
+        ["config"] = function()
+            if config_cursor < 1 then
+                config_cursor = 1
+            end
+            if config_cursor > #settings.options then
+                config_cursor = #settings.options
+            end
+            
+            for settingOption = 1, #settings.options, 1 do
+                if settings.options[settingOption].type == "num" then
+                    if settings.options[settingOption].currentValue < settings.options[settingOption].min then
+                        settings.options[settingOption].currentValue = settings.options[settingOption].min
+                    end
+                    if settings.options[settingOption].currentValue > settings.options[settingOption].max then
+                        settings.options[settingOption].currentValue = settings.options[settingOption].max
+                    end
+                end
+            end
+
+            if settings.options[config_cursor].currentValue ~= nil then
+                config_cursor_x = settings.options[config_cursor].currentValue
+            end
+
+            if config_cursor_y < 60 then
+                config_cursor_y = 60
+            end
+            if config_cursor_y > settings.yMax then
+                config_cursor_y = settings.yMax
+            end
         end
 
     })
 end
 
-function love.keypressed(k, sc, isrepeat)
+function _keydown(k)
     switch(state, 
     {
         ["desktop"] = function()
@@ -147,10 +201,55 @@ function love.keypressed(k, sc, isrepeat)
                 bootfile = io.open(utils.saveDirectory() .. "/.boot", "w+")
                 bootfile:write(gamenames[gamelib_cursor])
                 bootfile:close()
-                love.load()
+                bootloader_isGameLoaded = true
+            end
+            -- unload game --
+            if k == "crtl" then
+                bootfile = io.open(utils.saveDirectory() .. "/.boot", "w+")
+                bootfile:write("")
+                bootfile:close()
+                bootloader_isGameLoaded = false
+            end
+            -- play game --
+            if k == "lshift" or k == "rshift" then
+                if bootloader_isGameLoaded then
+                    timeElapsed = 0
+                    litiumapi.litgraphics.changePallete()
+                    state = "bootloader"
+                end
             end
             if k == "f5" then
                 gamenames = love.filesystem.getDirectoryItems("carts")
+            end
+            if k == "escape" then
+                state = "desktop"
+            end
+        end,
+        ["config"] = function()
+            if k == "up" then
+                config_cursor = config_cursor - 1
+                config_cursor_y = config_cursor_y - 30
+            end
+            if k == "down" then
+                config_cursor = config_cursor + 1
+                config_cursor_y = config_cursor_y + 30
+            end
+            if k == "right" then
+                if settings.options[config_cursor].type == "num" then
+                    config_cursor_x = config_cursor_x + 1
+                    settings.changeValue(config_cursor, config_cursor_x)
+                end
+            end
+            if k == "left" then
+                if settings.options[config_cursor].type == "num" then
+                    config_cursor_x = config_cursor_x - 1
+                    settings.changeValue(config_cursor, config_cursor_x)                    
+                end
+            end
+            if k == "return" then
+                if settings.options[config_cursor].type == "bool" then
+                    settings.change(config_cursor)
+                end
             end
             if k == "escape" then
                 state = "desktop"

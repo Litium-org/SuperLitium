@@ -2,6 +2,7 @@ storage = {}
 
 json = require 'libraries.json'
 basexx = require 'libraries.basexx'
+luazlw = require 'libraries.luazlw'
 utils = require 'src.engine.resources.nx_utils'
 bios = require 'src.engine.system.nx_bios'
 
@@ -49,7 +50,8 @@ function storage.writeToSlot(slotTag, tableContent)
                 jsonbase32 = basexx.to_base32(jsonEncodeData)
                 jsonbase64 = basexx.to_base64(jsonbase32)
                 jsonCrypt = basexx.to_z85(jsonbase64)
-                love.filesystem.write(storage.slots[k].filepath, jsonCrypt)
+                compr = luazlw.compress(jsonCrypt)
+                love.filesystem.write(storage.slots[k].filepath, compr)
             end
         else
             return "You can't write to save, create a save first"
@@ -67,7 +69,8 @@ function storage.getFromSlot(slotTag)
             --jsonRaw = base64.decode(cryptoRaw)
             --data = json.decode(jsonRaw)
             --------------------------------------------------------------------------------
-            rawPhase1 = basexx.from_z85(raw)
+            uncompr = luazlw.decompress(raw)
+            rawPhase1 = basexx.from_z85(uncompr)
             rawPhase2 = basexx.from_base64(rawPhase1)
             jsonRaw = basexx.from_base32(rawPhase2)
             data = json.decode(jsonRaw)
