@@ -55,8 +55,10 @@ shell.icons.desktop.arrow_r = images.importSpriteFile("system/resources/sprites/
 shell.icons.desktop.arrow_l = images.importSpriteFile("system/resources/sprites/arrow_l.spr")
 shell.icons.desktop.config = images.importSpriteFile("system/resources/sprites/config.spr")
 shell.icons.desktop.deskicon = images.importSpriteFile("system/resources/sprites/deskicon_lit.spr")
+shell.icons.desktop.deskicon_hover = images.importSpriteFile("system/resources/sprites/deskicon_lit_hover.spr")
 shell.icons.desktop.storeIcon = images.importSpriteFile("system/resources/sprites/store_icon.spr")
 shell.icons.desktop.disk = images.importSpriteFile("system/resources/sprites/disk.spr")
+shell.icons.desktop.about = images.importSpriteFile("system/resources/sprites/about_icon.spr")
 
 
 

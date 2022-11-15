@@ -1,20 +1,12 @@
-return {
+Options = {
     {
+        tag = "enable_bootlogo",
         title = "enable bootlogo",
         type = "bool",
         enable = true
     },
     {
-        title = "do spaghetti",
-        type = "bool",
-        enable = true
-    },
-    {
-        title = "do coffee",
-        type = "bool",
-        enable = true
-    },
-    {
+        tag = "enviroment_color",
         title = "enviroment color",
         type = "num",
         currentValue = 1,
@@ -22,6 +14,7 @@ return {
         max = 6
     },
     {
+        tag = "volume_master",
         title = "Master volume",
         type = "num",
         currentValue = 10,
@@ -29,10 +22,13 @@ return {
         max = 10
     },
     {
+        tag = "c_brightness",
         title = "brightness",
         type = "num",
         currentValue = 5,
         min = 1,
         max = 10
-    }
+    },
 }
+
+return Options

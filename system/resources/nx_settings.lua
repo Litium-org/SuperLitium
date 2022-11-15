@@ -1,8 +1,41 @@
 settings = {}
 
-ext = require 'system.resources.nx_settings-ext'
+utils = require 'src.engine.resources.nx_utils'
+json = require 'libraries.json'
+basexx = require 'libraries.basexx'
 
-settings.options = ext
+settings.options = {
+    {
+        tag = "enable_bootlogo",
+        title = "enable bootlogo",
+        type = "bool",
+        enable = true
+    },
+    {
+        tag = "enviroment_color",
+        title = "enviroment color",
+        type = "num",
+        currentValue = 3,
+        min = 1,
+        max = 6
+    },
+    {
+        tag = "volume_master",
+        title = "Master volume",
+        type = "num",
+        currentValue = 10,
+        min = 1,
+        max = 10
+    },
+    {
+        tag = "c_brightness",
+        title = "brightness",
+        type = "num",
+        currentValue = 5,
+        min = 1,
+        max = 10
+    },
+}
 
 y = 60
 settings.yMax = y
@@ -39,12 +72,40 @@ function settings.change(id)
     end
 end
 
+function settings.getValue(tag)
+    for opitem = 1, #settings.options, 1 do
+        if settings.options[opitem].tag == tag then
+            if settings.options[opitem].type == "bool" then
+                return settings.options[opitem].enable
+            end
+            if settings.options[opitem].type == "num" then
+                return settings.options[opitem].currentValue
+            end
+        end
+    end
+end
+
 function settings.loadSettings()
-    
+    data = love.filesystem.read("bin/data/data.slf")
+    base64_decode = basexx.from_base64(data)
+    config_Data = json.decode(base64_decode)
+    settings.options = config_Data
 end
 
 function settings.saveSettings()
-    
+    -- create json content --
+    config_data = json.encode(settings.options)
+    base64 = basexx.to_base64(config_data)
+
+    if not utils.exist("file", "bin/data/data.slf") then
+        config_file = love.filesystem.newFile("bin/data/data.slf", "w")
+        config_file:write(base64)
+        config_file:close()
+    else
+        config_file = io.open(love.filesystem.getSaveDirectory() .. "/bin/data/data.slf", "w+")
+        config_file:write(base64)
+        config_file:close()
+    end
 end
 
 return settings

@@ -20,11 +20,11 @@ styles = {
         data = function()
             txt = "welcome user"
                 --=[hub]=--
-            litiumapi.litgraphics.backgroundColor(11)
+            litiumapi.litgraphics.backgroundColor(desktopColor[colorID][1])
             litiumapi.litgraphics.newText(txt, (utils.screenWidth / 2) - (#txt * 16), 90, 4, 2, 1)
 
             litiumapi.litgraphics.newText("Version " .. tostring(NativeVersion), 10, 700, 2, 2, 1)
-            litiumapi.litgraphics.rect("fill", (utils.screenWidth / 2) - 160, (utils.screenHeight / 2) - 160, 320, 320, 10)
+            litiumapi.litgraphics.rect("fill", (utils.screenWidth / 2) - 160, (utils.screenHeight / 2) - 160, 320, 320, desktopColor[colorID][2])
         end,
         gamelib = function()
             litiumapi.litgraphics.backgroundColor(7)
@@ -33,12 +33,17 @@ styles = {
         config = function()
             litiumapi.litgraphics.backgroundColor(5)
             litiumapi.litgraphics.newText("Settings", 20, 10, 3, 3, 1)
-            litiumapi.litgraphics.newText("[ESC] - save and back]", 20, 690, 3, 3, 1)
+            litiumapi.litgraphics.newText("[ESC] - save and back", 20, 690, 3, 3, 1)
             litiumapi.litgraphics.rect("fill", 20, 40, utils.screenWidth - 40, utils.screenHeight - 80, 4)
+        end,
+        about = function()
+            litiumapi.litgraphics.backgroundColor(11)
+            litiumapi.litgraphics.newText("About Superlitium", 20, 10, 3, 3, 1)
+            litiumapi.litgraphics.newSprite(shell.icons.desktop.deskicon_hover, 340, 0, 2)
+            litiumapi.litgraphics.rect("fill", 20, 40, utils.screenWidth - 40, utils.screenHeight - 80, 10)
+            litiumapi.litgraphics.newText("[ESC] - back", 20, 690, 3, 3, 1)
         end
     }
 }
-
-
 
 return styles

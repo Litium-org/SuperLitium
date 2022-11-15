@@ -9,7 +9,8 @@ function _init()
     substatesNames = {
         "load game",
         "Litium store",
-        "settings"
+        "settings",
+        "About litium"
     }
     gamenames = love.filesystem.getDirectoryItems("carts")
     gamelib_cursor_pos = 22
@@ -29,17 +30,31 @@ function _init()
 
     -- check for versions --
     isVersionDifferent = version.compare()
+    -- load the settings --
+    settings.loadSettings()
+    desktopColor = {
+        {15, 14},
+        {13, 12},
+        {11, 10},
+        {9, 8},
+        {7, 6},
+        {5, 4},
+    }
+
 end
 
 -- will render some states XD
-function _render() 
+function _render()
+    
     switch(state, 
     {
         ["bootloader"] = function()
-            styles.misc.bootloader()
-            if bootloader_isGameLoaded then
-                strtxt = "Powered with SuperLitium"
-                litiumapi.litgraphics.newText(strtxt, (utils.screenWidth / 2) - (#strtxt * 5), 120, 4, 3, 1)
+            if settings.getValue("enable_bootlogo") then
+                styles.misc.bootloader()
+                if bootloader_isGameLoaded then
+                    strtxt = "Powered with SuperLitium"
+                    litiumapi.litgraphics.newText(strtxt, (utils.screenWidth / 2) - (#strtxt * 8), 120, 4, 3, 1)
+                end
             end
         end,
         ["oldversion"] = function()
@@ -63,6 +78,9 @@ function _render()
                 [3] = function()
                     litiumapi.litgraphics.newSprite(shell.icons.desktop.config, (utils.screenWidth / 2) - ((24 * 8) / 2), (utils.screenHeight / 2) - ((24 * 8) / 2), 8)
                 end,
+                [4] = function()
+                    litiumapi.litgraphics.newSprite(shell.icons.desktop.about, (utils.screenWidth / 2) - ((24 * 8) / 2), (utils.screenHeight / 2) - ((24 * 8) / 2), 8)
+                end,
             })
             litiumapi.litgraphics.newText(substatesNames[substate], 500, 530, 4, 2, 1)
         end,
@@ -77,12 +95,21 @@ function _render()
                 txtY = txtY + 22
             end
             gamelib_cursor_maxY = txtY
+        end,
+
+        ["about"] = function()
+            styles.desktop.about()
         end
     })
-    litiumapi.litgraphics.newText(tostring(config_cursor_x), 0, 0, 1, 3, 1)
-end
+    love.graphics.push()
+    love.graphics.setColor(0, 0, 0, (0.1 * settings.getValue("c_brightness") - 0.1))
+    love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+    love.graphics.pop()
+end 
 
 function _update(elapsed)
+    -- define the color table XD  --
+    colorID = settings.getValue("enviroment_color")
     timeElapsed = timeElapsed + 1 * elapsed
     msElapsed = math.floor(timeElapsed)
     switch(state, 
@@ -109,9 +136,9 @@ function _update(elapsed)
 
         ["desktop"] = function()
             if substate < 1 then
-                substate = 3
+                substate = 4
             end
-            if substate > 3 then
+            if substate > 4 then
                 substate = 1
             end
         end,
@@ -159,7 +186,6 @@ function _update(elapsed)
                 config_cursor_y = settings.yMax
             end
         end
-
     })
 end
 
@@ -184,6 +210,9 @@ function _keydown(k)
                     end,
                     [3] = function()
                         state = "config"
+                    end,
+                    [4] = function()
+                        state = "about"
                     end,
                 })
             end
@@ -250,9 +279,18 @@ function _keydown(k)
                 if settings.options[config_cursor].type == "bool" then
                     settings.change(config_cursor)
                 end
+                if settings.options[config_cursor].type == "button" then
+                    settings.click("")
+                end
             end
             if k == "escape" then
+                settings.saveSettings()
                 state = "desktop"
+            end
+        end,
+        ["about"] = function()
+            if k == "escape" then
+                state = 'desktop'
             end
         end
     })

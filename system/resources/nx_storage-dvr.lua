@@ -33,6 +33,19 @@ function storage.createSlot(slotTag)
     end
 end
 
+function storage.slotExist(slotTag)
+    for k, slot in pairs(storage.slots) do
+        if slot.tag == slotTag then
+            SlotFile = love.filesystem.getInfo(storage.slots[k].filepath, "file")
+            if SlotFile == nil then
+                return false
+            else
+                return true
+            end
+        end
+    end
+end
+
 function storage.writeToSlot(slotTag, tableContent)
     -- get the slot tag id --
     for k, slot in pairs(storage.slots) do
@@ -47,11 +60,10 @@ function storage.writeToSlot(slotTag, tableContent)
                 --jsonCrypto = base64.encode(jsonEncodeData)
                 --jsonCrypt = base64.encode(jsonCrypto)
                 --------------------------------------------------------------------------------
-                jsonbase32 = basexx.to_base32(jsonEncodeData)
-                jsonbase64 = basexx.to_base64(jsonbase32)
-                jsonCrypt = basexx.to_z85(jsonbase64)
-                compr = luazlw.compress(jsonCrypt)
-                love.filesystem.write(storage.slots[k].filepath, compr)
+                --jsonbase32 = basexx.to_base32(jsonEncodeData)
+                --jsonbase64 = basexx.to_base64(jsonbase32)
+                --jsonCrypt = basexx.to_z85(jsonbase64)
+                love.filesystem.write(storage.slots[k].filepath, jsonEncodeData)
             end
         else
             return "You can't write to save, create a save first"
@@ -69,11 +81,10 @@ function storage.getFromSlot(slotTag)
             --jsonRaw = base64.decode(cryptoRaw)
             --data = json.decode(jsonRaw)
             --------------------------------------------------------------------------------
-            uncompr = luazlw.decompress(raw)
-            rawPhase1 = basexx.from_z85(uncompr)
-            rawPhase2 = basexx.from_base64(rawPhase1)
-            jsonRaw = basexx.from_base32(rawPhase2)
-            data = json.decode(jsonRaw)
+            --rawPhase1 = basexx.from_z85(raw)
+            --rawPhase2 = basexx.from_base64(rawPhase1)
+            --jsonRaw = basexx.from_base32(rawPhase2)
+            data = json.decode(raw)
             return data
         end
     end
