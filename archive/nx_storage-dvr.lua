@@ -1,4 +1,4 @@
-storage = {}
+Storage = {}
 
 json = require 'libraries.json'
 basexx = require 'libraries.basexx'
@@ -6,37 +6,37 @@ luazlw = require 'libraries.luazlw'
 utils = require 'src.engine.resources.nx_utils'
 bios = require 'src.engine.system.nx_bios'
 
-storage.slots = {}
+Storage.slots = {}
 
 --------------------------------------------------------------------------------
 -- Functions for saving and loading system
 --------------------------------------------------------------------------------
-function storage.createSlot(slotTag)
+function Storage.createSlot(slotTag)
     Slot = {
         tag = string.sub(slotTag, 1, 20),
         registeredSize = 262144,
     }
 
-    if #storage.slots > 5 then
+    if #Storage.slots > 5 then
         return 'Maximum slot reached : 5'
     else
-        if #storage.slots >= 0 then
+        if #Storage.slots >= 0 then
             slotId = 1
         else
-            slotId = #storage.slots
+            slotId = #Storage.slots
         end
         slotFile, errorstr = love.filesystem.newFile("bin/data/slot_" .. slotId .. ".lds", "w")
         Slot.filepath = "bin/data/slot_" .. slotId .. ".lds"
         slotFile:close()
-        table.insert(storage.slots, Slot)
+        table.insert(Storage.slots, Slot)
         return 'sucess'
     end
 end
 
-function storage.slotExist(slotTag)
-    for k, slot in pairs(storage.slots) do
+function Storage.slotExist(slotTag)
+    for k, slot in pairs(Storage.slots) do
         if slot.tag == slotTag then
-            SlotFile = love.filesystem.getInfo(storage.slots[k].filepath, "file")
+            SlotFile = love.filesystem.getInfo(Storage.slots[k].filepath, "file")
             if SlotFile == nil then
                 return false
             else
@@ -46,11 +46,11 @@ function storage.slotExist(slotTag)
     end
 end
 
-function storage.writeToSlot(slotTag, tableContent)
+function Storage.writeToSlot(slotTag, tableContent)
     -- get the slot tag id --
-    for k, slot in pairs(storage.slots) do
+    for k, slot in pairs(Storage.slots) do
         if slot.tag == slotTag then
-            SlotFile = love.filesystem.getInfo(storage.slots[k].filepath, "file")
+            SlotFile = love.filesystem.getInfo(Storage.slots[k].filepath, "file")
             if SlotFile.size > slot.registeredSize then
                 return nil
             else
@@ -63,7 +63,7 @@ function storage.writeToSlot(slotTag, tableContent)
                 --jsonbase32 = basexx.to_base32(jsonEncodeData)
                 --jsonbase64 = basexx.to_base64(jsonbase32)
                 --jsonCrypt = basexx.to_z85(jsonbase64)
-                love.filesystem.write(storage.slots[k].filepath, jsonEncodeData)
+                love.filesystem.write(Storage.slots[k].filepath, jsonEncodeData)
             end
         else
             return "You can't write to save, create a save first"
@@ -71,10 +71,10 @@ function storage.writeToSlot(slotTag, tableContent)
     end
 end
 
-function storage.getFromSlot(slotTag)
-    for k, slot in pairs(storage.slots) do
+function Storage.getFromSlot(slotTag)
+    for k, slot in pairs(Storage.slots) do
         if slot.tag == slotTag then
-            raw = love.filesystem.read(storage.slots[k].filepath)
+            raw = love.filesystem.read(Storage.slots[k].filepath)
             --------------------------------------------------------------------------------
             -- [ Old Method ] --
             --cryptoRaw = base64.decode(raw)
@@ -91,4 +91,4 @@ function storage.getFromSlot(slotTag)
 end
 
 
-return storage
+return Storage

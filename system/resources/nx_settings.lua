@@ -6,6 +6,12 @@ basexx = require 'libraries.basexx'
 
 settings.options = {
     {
+        tag = "allow_check_updates",
+        title = "Check for updates",
+        type = "bool",
+        enable = true
+    },
+    {
         tag = "enable_bootlogo",
         title = "enable bootlogo",
         type = "bool",
@@ -17,7 +23,7 @@ settings.options = {
         type = "num",
         currentValue = 3,
         min = 1,
-        max = 6
+        max = 7
     },
     {
         tag = "volume_master",
@@ -62,7 +68,7 @@ function settings.changeValue(id, value)
     end
 end
 
-function settings.change(id)
+function settings.changeBool(id)
     if settings.options[id].type == "bool" then
         if settings.options[id].enable then
             settings.options[id].enable = false

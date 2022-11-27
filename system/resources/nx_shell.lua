@@ -59,6 +59,7 @@ shell.icons.desktop.deskicon_hover = images.importSpriteFile("system/resources/s
 shell.icons.desktop.storeIcon = images.importSpriteFile("system/resources/sprites/store_icon.spr")
 shell.icons.desktop.disk = images.importSpriteFile("system/resources/sprites/disk.spr")
 shell.icons.desktop.about = images.importSpriteFile("system/resources/sprites/about_icon.spr")
+shell.icons.desktop.save_manager = images.importSpriteFile("system/resources/sprites/save_manager_icon.spr")
 
 
 

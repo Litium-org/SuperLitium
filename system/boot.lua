@@ -10,8 +10,17 @@ function _init()
         "load game",
         "Litium store",
         "settings",
-        "About litium"
+        "About litium",
+        "Save manager",
     }
+    substatesTags = {
+        "gamelib",
+        "store",
+        "config",
+        "about",
+        "savemngr",
+    }
+    desktop_iconOffset = 7
     gamenames = love.filesystem.getDirectoryItems("carts")
     gamelib_cursor_pos = 22
     gamelib_cursor = 1
@@ -20,16 +29,21 @@ function _init()
     config_cursor = 1
     config_cursor_y = 60
     config_cursor_x = 1
+    savemngr_cursor_y = 60
+    savemngr_cursor = 1
+    savemngr_cursor_offset = 1
     --------------=[ Modules ]=------------------- 
     shell = require 'system.resources.nx_shell'
     settings = require 'system.resources.nx_settings'
-    Storage = require 'system.resources.nx_storage-dvr'
+    storage = require 'src.core.virtualization.drivers.nx_storage-dvr'
     version = require 'system.resources.nx_version'
     styles = require 'system.resources.nx_styles'
     ---------------------------------
 
     -- check for versions --
-    isVersionDifferent = version.compare()
+    if settings.getValue("allow_check_updates") then
+        isVersionDifferent = version.compare()
+    end
     -- load the settings --
     settings.loadSettings()
     desktopColor = {
@@ -39,13 +53,13 @@ function _init()
         {9, 8},
         {7, 6},
         {5, 4},
+        {3, 2},
     }
 
 end
 
 -- will render some states XD
 function _render()
-    
     switch(state, 
     {
         ["bootloader"] = function()
@@ -70,21 +84,23 @@ function _render()
             switch(substate, 
             {
                 [1] = function()
-                    litiumapi.litgraphics.newSprite(shell.icons.desktop.disk, (utils.screenWidth / 2) - ((24 * 8) / 2), (utils.screenHeight / 2) - ((24 * 8) / 2), 8)
+                    litiumapi.litgraphics.newSprite(shell.icons.desktop.disk, (utils.screenWidth / 2) - ((24 * desktop_iconOffset) / 2), (utils.screenHeight / 2) - ((24 * 8) / 2), 8)
                 end,
                 [2] = function()
-                    litiumapi.litgraphics.newSprite(shell.icons.desktop.storeIcon, (utils.screenWidth / 2) - ((24 * 8) / 2), (utils.screenHeight / 2) - ((24 * 8) / 2), 8)
+                    litiumapi.litgraphics.newSprite(shell.icons.desktop.storeIcon, (utils.screenWidth / 2) - ((24 * desktop_iconOffset) / 2), (utils.screenHeight / 2) - ((24 * 8) / 2), 8)
                 end,
                 [3] = function()
-                    litiumapi.litgraphics.newSprite(shell.icons.desktop.config, (utils.screenWidth / 2) - ((24 * 8) / 2), (utils.screenHeight / 2) - ((24 * 8) / 2), 8)
+                    litiumapi.litgraphics.newSprite(shell.icons.desktop.config, (utils.screenWidth / 2) - ((24 * desktop_iconOffset) / 2), (utils.screenHeight / 2) - ((24 * 8) / 2), 8)
                 end,
                 [4] = function()
-                    litiumapi.litgraphics.newSprite(shell.icons.desktop.about, (utils.screenWidth / 2) - ((24 * 8) / 2), (utils.screenHeight / 2) - ((24 * 8) / 2), 8)
+                    litiumapi.litgraphics.newSprite(shell.icons.desktop.about, (utils.screenWidth / 2) - ((24 * desktop_iconOffset) / 2), (utils.screenHeight / 2) - ((24 * 8) / 2), 8)
+                end,
+                [5] = function()
+                    litiumapi.litgraphics.newSprite(shell.icons.desktop.save_manager, (utils.screenWidth / 2) - ((24 * desktop_iconOffset) / 2), (utils.screenHeight / 2) - ((24 * 8) / 2), 8)
                 end,
             })
             litiumapi.litgraphics.newText(substatesNames[substate], 500, 530, 4, 2, 1)
         end,
-
         -- Substates --
         ["gamelib"] = function()
             styles.desktop.gamelib()
@@ -99,11 +115,16 @@ function _render()
 
         ["about"] = function()
             styles.desktop.about()
+        end,
+
+        ["savemngr"] = function()
+            styles.desktop.savemngr()
+            storage.renderPage(savemngr_cursor_offset)
+            litiumapi.litgraphics.newSprite(shell.icons.desktop.arrow_l, 0, gamelib_cursor_pos, 1)
         end
     })
     love.graphics.push()
-    love.graphics.setColor(0, 0, 0, (0.1 * settings.getValue("c_brightness") - 0.1))
-    love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+        litiumapi.litgraphics.newText(state, 0, 0, 1, 3, 1)
     love.graphics.pop()
 end 
 
@@ -127,18 +148,16 @@ function _update(elapsed)
                 end
             end
         end,
-
         ["oldversion"] = function()
             if litiumapi.litinput.isKeyDown("return") then
                 love.event.quit()
             end
         end,
-
         ["desktop"] = function()
             if substate < 1 then
-                substate = 4
+                substate = #substatesNames
             end
-            if substate > 4 then
+            if substate > #substatesNames then
                 substate = 1
             end
         end,
@@ -185,6 +204,15 @@ function _update(elapsed)
             if config_cursor_y > settings.yMax then
                 config_cursor_y = settings.yMax
             end
+        end,
+        ["savemngr"] = function()
+            storage.update(elapsed)
+            if savemngr_cursor_offset < 1 then
+                savemngr_cursor_offset = 1
+            end
+            if savemngr_cursor_offset > #storage.listItems then
+                savemngr_cursor_offset = #storage.listItems
+            end
         end
     })
 end
@@ -200,21 +228,7 @@ function _keydown(k)
                 substate = substate - 1
             end
             if k == "return" then
-                switch(substate, 
-                {
-                    [1] = function()
-                        state = "gamelib"
-                    end,
-                    [2] = function()
-                        state = "store"
-                    end,
-                    [3] = function()
-                        state = "config"
-                    end,
-                    [4] = function()
-                        state = "about"
-                    end,
-                })
+                state = substatesTags[substate]
             end
         end,
         ["gamelib"] = function()
@@ -233,14 +247,14 @@ function _keydown(k)
                 bootloader_isGameLoaded = true
             end
             -- unload game --
-            if k == "crtl" then
+            if k == "f2" then
                 bootfile = io.open(utils.saveDirectory() .. "/.boot", "w+")
                 bootfile:write("")
                 bootfile:close()
                 bootloader_isGameLoaded = false
             end
             -- play game --
-            if k == "lshift" or k == "rshift" then
+            if k == "f1" or k == "rshift" then
                 if bootloader_isGameLoaded then
                     timeElapsed = 0
                     litiumapi.litgraphics.changePallete()
@@ -277,11 +291,9 @@ function _keydown(k)
             end
             if k == "return" then
                 if settings.options[config_cursor].type == "bool" then
-                    settings.change(config_cursor)
+                    settings.changeBool(config_cursor)
                 end
-                if settings.options[config_cursor].type == "button" then
-                    settings.click("")
-                end
+                
             end
             if k == "escape" then
                 settings.saveSettings()
@@ -291,6 +303,22 @@ function _keydown(k)
         ["about"] = function()
             if k == "escape" then
                 state = 'desktop'
+            end
+        end,
+        ["savemngr"] = function()
+            if k == "escape" then
+                state = "desktop"
+            end
+            if k == "up" then
+                savemngr_cursor_offset = savemngr_cursor_offset - 1
+            end
+
+            if k == "down" then
+                savemngr_cursor_offset = savemngr_cursor_offset + 1
+            end
+
+            if k == "1" then
+                storage.export()
             end
         end
     })

@@ -1,9 +1,6 @@
 images = {}
 
 json = require 'libraries.json'
-basexx = require 'libraries.basexx'
-luazlw = require 'libraries.luazlw'
-
 
 function images.importSpriteFile(name)
     spritefile = io.open(name, "r")

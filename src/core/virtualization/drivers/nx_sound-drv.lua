@@ -5,19 +5,19 @@ function soundthread.newTone(freq, wavelength, type)
     local rate      = 44100 
     local length    = wavelength / 32 
     local tone      = freq
-    local p         = math.floor(rate / tone) 
+    local phase     = math.floor(rate / tone) 
     local soundData = love.sound.newSoundData(math.floor(length * rate), rate, 16, 1)
     for i = 0, soundData:getSampleCount() - 1 do
         switch(type, 
         {
             ["square"] = function()
-                soundData:setSample(i, i % p < p / 2 and 1 or -1) 
+                soundData:setSample(i, i % phase < phase / 2 and 1 or -1) 
             end,
             ["sine"] = function()
-                soundData:setSample(i, math.sin(2 * math.pi * i / p))
+                soundData:setSample(i, math.sin(2 * math.pi * i / phase))
             end,
             ["triangle"] = function()
-                soundData:setSample(i, 4.0 * math.abs((phase * frequency) - math.floor(phase * frequency) - .5) - 1.0)
+                soundData:setSample(i, 4.0 * math.abs((phase * tone) - math.floor(phase * tone) - .5) - 1.0)
             end,
             ["noise"] = function()
                 soundData:setSample(i, math.random())

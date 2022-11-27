@@ -1,7 +1,7 @@
 installer = {}
 
 utils = require 'src.engine.resources.nx_utils'
-Storage = require 'system.resources.nx_storage-dvr'
+--Storage = require 'system.resources.nx_storage-dvr'
 fileinstaller = require 'src.engine.resources.installer.nx_filesInstaller'
 
 saveDir = love.filesystem.getSaveDirectory()
@@ -13,7 +13,6 @@ folderToInstall = {
     "bin/data",
     "bin/apps",
     "bin/server",
-    "disks",
     "data"
 }
 
