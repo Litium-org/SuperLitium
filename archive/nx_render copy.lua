@@ -27,6 +27,7 @@ function Render.drawCall(spritetbl, x, y, scale)
                 else
                     love.graphics.setColor(r, g, b, a)
                     love.graphics.rectangle(wireframe, x + (xp * scale), y + (yp * scale), scale, scale)
+                    return x, y, scale
                 end
             end
         end

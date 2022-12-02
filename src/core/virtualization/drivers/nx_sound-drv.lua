@@ -16,9 +16,6 @@ function soundthread.newTone(freq, wavelength, type)
             ["sine"] = function()
                 soundData:setSample(i, math.sin(2 * math.pi * i / phase))
             end,
-            ["triangle"] = function()
-                soundData:setSample(i, 4.0 * math.abs((phase * tone) - math.floor(phase * tone) - .5) - 1.0)
-            end,
             ["noise"] = function()
                 soundData:setSample(i, math.random())
             end

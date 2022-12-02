@@ -1,6 +1,5 @@
 fileinstaller = {}
 
-ext = require 'system.resources.nx_settings-ext'
 utils = require 'src.engine.resources.nx_utils'
 
 filesToInstall = {

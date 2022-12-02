@@ -8,10 +8,11 @@ function _init()
     substate = 1
     substatesNames = {
         "load game",
-        "Litium store",
+        "litium store",
         "settings",
-        "About litium",
-        "Save manager",
+        "about litium",
+        "save manager",
+        "command line"
     }
     substatesTags = {
         "gamelib",
@@ -19,6 +20,7 @@ function _init()
         "config",
         "about",
         "savemngr",
+        "commandline"
     }
     desktop_iconOffset = 7
     gamenames = love.filesystem.getDirectoryItems("carts")
@@ -40,20 +42,22 @@ function _init()
     styles = require 'system.resources.nx_styles'
     ---------------------------------
 
+    -- load the settings --
+    settings.loadSettings()
+
     -- check for versions --
     if settings.getValue("allow_check_updates") then
         isVersionDifferent = version.compare()
     end
-    -- load the settings --
-    settings.loadSettings()
+
     desktopColor = {
+        {17, 16},
         {15, 14},
         {13, 12},
         {11, 10},
         {9, 8},
         {7, 6},
         {5, 4},
-        {3, 2},
     }
 
 end
@@ -66,7 +70,7 @@ function _render()
             if settings.getValue("enable_bootlogo") then
                 styles.misc.bootloader()
                 if bootloader_isGameLoaded then
-                    strtxt = "Powered with SuperLitium"
+                    strtxt = "powered with SuperLitium"
                     litiumapi.litgraphics.newText(strtxt, (utils.screenWidth / 2) - (#strtxt * 8), 120, 4, 3, 1)
                 end
             end
@@ -98,6 +102,9 @@ function _render()
                 [5] = function()
                     litiumapi.litgraphics.newSprite(shell.icons.desktop.save_manager, (utils.screenWidth / 2) - ((24 * desktop_iconOffset) / 2), (utils.screenHeight / 2) - ((24 * 8) / 2), 8)
                 end,
+                [6] = function()
+                    litiumapi.litgraphics.newSprite(shell.icons.desktop.commandline, (utils.screenWidth / 2) - ((24 * desktop_iconOffset) / 2), (utils.screenHeight / 2) - ((24 * 8) / 2), 8)
+                end,
             })
             litiumapi.litgraphics.newText(substatesNames[substate], 500, 530, 4, 2, 1)
         end,
@@ -124,7 +131,7 @@ function _render()
         end
     })
     love.graphics.push()
-        litiumapi.litgraphics.newText(state, 0, 0, 1, 3, 1)
+        litiumapi.litgraphics.newText(substatesTags[substate] .. " " .. substate, 0, 0, 1, 3, 1)
     love.graphics.pop()
 end 
 
@@ -217,7 +224,7 @@ function _update(elapsed)
     })
 end
 
-function _keydown(k)
+function _keydown(k, code)
     switch(state, 
     {
         ["desktop"] = function()
@@ -228,7 +235,13 @@ function _keydown(k)
                 substate = substate - 1
             end
             if k == "return" then
-                state = substatesTags[substate]
+                if substate == 6 then
+                    tempfile = love.filesystem.newFile(".boot.tmp", "w")
+                    tempfile:close()
+                    love.load()
+                else
+                    state = substatesTags[substate]
+                end
             end
         end,
         ["gamelib"] = function()

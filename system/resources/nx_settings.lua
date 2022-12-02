@@ -3,11 +3,12 @@ settings = {}
 utils = require 'src.engine.resources.nx_utils'
 json = require 'libraries.json'
 basexx = require 'libraries.basexx'
+debug = require 'src.debug.nx_debug'
 
 settings.options = {
     {
         tag = "allow_check_updates",
-        title = "Check for updates",
+        title = "check for updates",
         type = "bool",
         enable = true
     },
@@ -27,9 +28,9 @@ settings.options = {
     },
     {
         tag = "volume_master",
-        title = "Master volume",
+        title = "master volume",
         type = "num",
-        currentValue = 10,
+        currentValue = 7,
         min = 1,
         max = 10
     },
@@ -37,14 +38,22 @@ settings.options = {
         tag = "c_brightness",
         title = "brightness",
         type = "num",
-        currentValue = 5,
+        currentValue = 3,
         min = 1,
         max = 10
-    },
+    }
 }
 
-y = 60
+local y = 60
+settings.saveOptions = {}
+
 settings.yMax = y
+
+function settings.init()
+    for opitem = 1, #settings.options, 1 do
+        
+    end
+end
 
 function settings.render()
     y = 60
@@ -62,9 +71,19 @@ function settings.render()
     settings.yMax = y - 30
 end
 
+function settings.update(elapsed)
+    
+end
+
 function settings.changeValue(id, value)
     if settings.options[id].type == "num" then
-        settings.options[id].currentValue = value
+        if settings.options[id].currentValue > settings.options[id].max then
+            settings.options[id].currentValue = settings.options[id].max
+        elseif settings.options[id].currentValue < settings.options[id].min then
+            settings.options[id].currentValue = settings.options[id].min
+        else
+            settings.options[id].currentValue = value
+        end
     end
 end
 
@@ -75,6 +94,7 @@ function settings.changeBool(id)
         else
             settings.options[id].enable = true
         end
+        --print(debug.showTableContent(settings.options))
     end
 end
 
@@ -92,18 +112,25 @@ function settings.getValue(tag)
 end
 
 function settings.loadSettings()
-    data = love.filesystem.read("bin/data/data.slf")
-    base64_decode = basexx.from_base64(data)
-    config_Data = json.decode(base64_decode)
-    settings.options = config_Data
+    dataFile = love.filesystem.getInfo("bin/data/data.slf")
+    if dataFile ~= nil then
+        datafile = io.open(love.filesystem.getSaveDirectory() .. "/bin/data/data.slf")
+        data = datafile:read("*all")
+        base64_decode = basexx.from_base64(data)
+        config_Data = json.decode(base64_decode)
+        settings.options = config_Data
+    else
+        return
+    end
 end
 
 function settings.saveSettings()
     -- create json content --
+    settingsFile = love.filesystem.getInfo("bin/data/data.slf")
     config_data = json.encode(settings.options)
     base64 = basexx.to_base64(config_data)
 
-    if not utils.exist("file", "bin/data/data.slf") then
+    if settingsFile == nil then
         config_file = love.filesystem.newFile("bin/data/data.slf", "w")
         config_file:write(base64)
         config_file:close()

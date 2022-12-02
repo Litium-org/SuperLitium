@@ -73,7 +73,6 @@ function nativelocks.lock()
     love.audio.setPosition = nil
     love.audio.setRecordingDevices = nil
     love.audio.setVelocity = nil
-    love.audio.setVolume = nil
 
     -- sound --
 

@@ -12,18 +12,16 @@ text.wireframeMode = false
 wireframe = "fill"
 
 
-function text.drawStr(Textstr, x, y, FontSize, txtColor, bgColorId)
+function text.drawText(Textstr, x, y, FontSize, txtColor, bgColorId)
     --textStr = text.splitLetters(str)
-    strNum = tostring(Textstr)
-    textOutput = string.lower(strNum)
+    local strNum = tostring(Textstr)
+    local textOutput = string.lower(strNum)
     --letters = tostring([[abcdefghijklmnopqrstuvwxyz0123456789 !=$(),.:;+-/|<>?[]]])
-    letterSize = font.FontLetterSize
-    textX = x
-    textY = y
+    local letterSize = font.FontLetterSize
+    local textX = x
+    local textY = y
     for i = 1, #Textstr do
-        char = textOutput:sub(i, i) -- this gets the current letter of whatever number we are in the loop
-        --num = letters:find(char) -- this returns the position of char in our letters string.
-        --print(char, num, #font[char])
+        char = textOutput:sub(i, i)
         draw(font[char], textX, textY, FontSize, txtColor, bgColorId)
 
         textX = textX + (FontSize * letterSize)
@@ -32,8 +30,8 @@ end
 
 function draw(spritetbl, x, y, scale, TextColorID, BackgroundColorID)
 
-    colorsBG = vrampallete.pallete
-    colorsText = vrampallete.pallete
+    local colorsBG = vrampallete.pallete
+    local colorsText = vrampallete.pallete
 
     -- wireframe for debug --
     if text.wireframeMode then

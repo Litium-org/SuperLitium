@@ -60,6 +60,7 @@ shell.icons.desktop.storeIcon = images.importSpriteFile("system/resources/sprite
 shell.icons.desktop.disk = images.importSpriteFile("system/resources/sprites/disk.spr")
 shell.icons.desktop.about = images.importSpriteFile("system/resources/sprites/about_icon.spr")
 shell.icons.desktop.save_manager = images.importSpriteFile("system/resources/sprites/save_manager_icon.spr")
+shell.icons.desktop.commandline = images.importSpriteFile("system/resources/sprites/commandline.spr")
 
 
 

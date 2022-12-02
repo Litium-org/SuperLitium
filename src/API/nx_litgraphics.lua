@@ -38,7 +38,7 @@ end
 ---@param txtColor number   @ set the text color (1-17)
 ---@param BgColor number    @ set the background of the text color (1-17)
 function litgraphics.newText(string, x, y, scale, txtColor, BgColor)
-    text.drawStr(string, x, y, scale, txtColor, BgColor)
+    text.drawText(string, x, y, scale, txtColor, BgColor)
 end
 
 --- Change the default color pallete
@@ -52,7 +52,6 @@ function litgraphics.changePallete(colorTable)
             print("Pallete can't be higher than 17 colors at same time")
             love.event.quit()
         else
-            --print("color changed")
             vramPallete.pallete = colorTable
         end
     end

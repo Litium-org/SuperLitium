@@ -12,6 +12,7 @@ folderToInstall = {
     "bin",
     "bin/data",
     "bin/apps",
+    "bin/projects",
     "bin/server",
     "data"
 }

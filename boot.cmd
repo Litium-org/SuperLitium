@@ -1,5 +1,5 @@
 @echo off
 cls
-color 05
+color 03
 echo building...
 love .

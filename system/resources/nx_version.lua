@@ -47,6 +47,8 @@ function version.compare()
         end
 
         --- greater
+        -- disabled XD --
+        --[[
         if sv_MAJOR > nv_MAJOR 
         or sv_MINOR > nv_MINOR 
         or sv_PATCH > nv_PATCH 
@@ -54,7 +56,8 @@ function version.compare()
             return true
         else
             return false
-        end 
+        end
+        ]]--
     else
         print("---------------------------------")
         print("Litium.Error - Can't fetch server version data")

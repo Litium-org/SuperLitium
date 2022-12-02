@@ -1,5 +1,6 @@
 function love.load()
     love.keyboard.setKeyRepeat(true)
+    love.setDeprecationOutput(false)
     stringx             = require 'pl.stringx'
     installer           = require 'src.engine.resources.nx_installer'
     litiumapi           = require 'src.API.nx_litiumAPI'
@@ -14,8 +15,11 @@ function love.load()
 
     print("-=[ SuperLitium ]=-")
 
+    -- init --
+    litiumapi.litgraphics.changePallete()
 
-    --https               = require 'libraries.https'
+    -- set the volume --
+    love.audio.setVolume(0.1 * settings.getValue("volume_master"))
 
     -- lock some commands XDDD
     nativelocks.lock()
@@ -46,10 +50,17 @@ function love.update(elapsed)
     pcall(cartdata(), _update(elapsed))
 end
 
-function love.keypressed(k)
+function love.keypressed(k, code)
     for key, value in pairs(keyboard.keys) do
         if value == k then
-            pcall(cartdata(), _keydown(k))
+            pcall(cartdata(), _keydown(k, code))
+            if k == "home" then
+                
+            end
         end
     end
+end
+
+function love.quit()
+    love.filesystem.remove(".boot.tmp")
 end
