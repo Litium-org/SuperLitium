@@ -10,11 +10,13 @@ makeDir = love.filesystem.createDirectory
 folderToInstall = {
     "carts",
     "bin",
+    "bin/temp",
     "bin/data",
     "bin/apps",
     "bin/projects",
     "bin/server",
-    "data"
+    "bin/scripts/",
+    "data",
 }
 
 function verifyFolderExist()

@@ -6,4 +6,8 @@ function mousedvr.getMousePos()
     return x, y 
 end
 
+function mousedvr.isButtonDown(id)
+    return love.mouse.isDown(id)
+end
+
 return mousedvr

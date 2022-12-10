@@ -25,6 +25,10 @@ end
 function _keydown(k, code)
     
 end
+
+function _gamepaddown(joystick, button)
+
+end
     ]]
 
     -- create the folder structure --

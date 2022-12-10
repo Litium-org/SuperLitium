@@ -1,3 +1,6 @@
 .restore
+tests/
 test.lua
 test2.lua
+archive/
+.restore

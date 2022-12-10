@@ -13,10 +13,24 @@ settings.options = {
         enable = true
     },
     {
+        title = "For developers",
+        type = "label",
+    },
+    {
         tag = "enable_bootlogo",
         title = "enable bootlogo",
         type = "bool",
         enable = true
+    },
+    {
+        tag = "enable_joystick",
+        title = "enable gamepad (gamepad functions and callbacks)",
+        type = "bool",
+        enable = true
+    },
+    {
+        title = "Main functions",
+        type = "label",
     },
     {
         tag = "enviroment_color",
@@ -31,7 +45,7 @@ settings.options = {
         title = "master volume",
         type = "num",
         currentValue = 7,
-        min = 1,
+        min = 0,
         max = 10
     },
     {
@@ -66,13 +80,13 @@ function settings.render()
             optext = tostring(settings.options[oi].title) .. "   <" .. tostring(settings.options[oi].currentValue) .. ">"
             litiumapi.litgraphics.newText(optext, 60, y, 3, 3, 1)
         end
+        if settings.options[oi].type == "label" then
+            optext = "-=[ " .. tostring(settings.options[oi].title) .. " ]=-"
+            litiumapi.litgraphics.newText(optext, 60, y, 3, 3, 1)
+        end
         y = y + 30
     end
     settings.yMax = y - 30
-end
-
-function settings.update(elapsed)
-    
 end
 
 function settings.changeValue(id, value)
@@ -94,7 +108,6 @@ function settings.changeBool(id)
         else
             settings.options[id].enable = true
         end
-        --print(debug.showTableContent(settings.options))
     end
 end
 

@@ -1,5 +1,13 @@
 function _init()
+    --------------=[ Modules ]=------------------- 
     images = require 'system.resources.nx_image-dvr'
+    shell = require 'system.resources.nx_shell'
+    settings = require 'system.resources.nx_settings'
+    storage = require 'src.core.virtualization.drivers.nx_storage-dvr'
+    version = require 'system.resources.nx_version'
+    styles = require 'system.resources.nx_styles'
+    tween = require 'libraries.tween'
+    
     ------------=[ Variables ]=---------------------
     math.randomseed(os.clock())
     timeElapsed = 0
@@ -20,7 +28,7 @@ function _init()
         "config",
         "about",
         "savemngr",
-        "commandline"
+        "commandline",
     }
     desktop_iconOffset = 7
     gamenames = love.filesystem.getDirectoryItems("carts")
@@ -34,14 +42,12 @@ function _init()
     savemngr_cursor_y = 60
     savemngr_cursor = 1
     savemngr_cursor_offset = 1
-    --------------=[ Modules ]=------------------- 
-    shell = require 'system.resources.nx_shell'
-    settings = require 'system.resources.nx_settings'
-    storage = require 'src.core.virtualization.drivers.nx_storage-dvr'
-    version = require 'system.resources.nx_version'
-    styles = require 'system.resources.nx_styles'
+    savemngr_cursor_saveID = 1
+    savemngr_cursor_y = 60
+    savemngr_information = {}
+    about_txt_y = 180
     ---------------------------------
-
+    
     -- load the settings --
     settings.loadSettings()
 
@@ -59,7 +65,10 @@ function _init()
         {7, 6},
         {5, 4},
     }
-
+    
+    loadingBar = {size = 0}
+    loadingBar_tween = tween.new(2, loadingBar, {size = 1280}, 'outSine')
+    colorInit = math.random(#desktopColor, 1)
 end
 
 -- will render some states XD
@@ -70,10 +79,15 @@ function _render()
             if settings.getValue("enable_bootlogo") then
                 styles.misc.bootloader()
                 if bootloader_isGameLoaded then
-                    strtxt = "powered with SuperLitium"
-                    litiumapi.litgraphics.newText(strtxt, (utils.screenWidth / 2) - (#strtxt * 8), 120, 4, 3, 1)
+                    strtxt = "powered with superlitium"
+                    litiumapi.litgraphics.newText(strtxt, (utils.screenWidth / 2) - (#strtxt * 13), 120, 4, 3, 1)
+                else
+                    strtxt = "Loading components"
+                    litiumapi.litgraphics.newText(strtxt, (utils.screenWidth / 2) - (#strtxt * 13), 120, 4, 3, 1)
                 end
             end
+            litiumapi.litgraphics.rect("fill", 0, 700, loadingBar.size, 64, desktopColor[colorInit][1])
+            litiumapi.litgraphics.rect("fill", 0, 700, loadingBar.size, 2, desktopColor[colorInit][2])
         end,
         ["oldversion"] = function()
             styles.misc.oldversion()
@@ -82,6 +96,20 @@ function _render()
             styles.desktop.config()
             settings.render()
             litiumapi.litgraphics.newSprite(shell.icons.desktop.arrow_l, 30, config_cursor_y, 1)
+            if joystick ~= nil and settings.getValue("enable_joystick") then
+                litiumapi.litgraphics.newSprite(shell.icons.env.dir_up, 200, 680, 2)
+                litiumapi.litgraphics.newSprite(shell.icons.env.dir_down, 230, 680, 2)
+                litiumapi.litgraphics.newSprite(shell.icons.env.dir_left, 260, 680, 2)
+                litiumapi.litgraphics.newSprite(shell.icons.env.dir_right, 290, 680, 2)
+                litiumapi.litgraphics.newText("move cursor", 330, 686, 2, 3, 1)
+                litiumapi.litgraphics.newSprite(shell.icons.env.a_button, 480, 680, 1.7)
+                litiumapi.litgraphics.newText("select", 510, 686, 2, 3, 1)
+                litiumapi.litgraphics.newSprite(shell.icons.env.b_button, 640, 680, 1.7)
+                litiumapi.litgraphics.newText("back", 670, 686, 2, 3, 1)
+            else
+                local controlsText = "[esc] back | [up/down/left/right arrow] move cursor | [enter] change value"
+                litiumapi.litgraphics.newText(controlsText, 20, 690, 2.7, 3, 1)
+            end
         end,
         ["desktop"] = function()
             styles.desktop.data()
@@ -107,6 +135,17 @@ function _render()
                 end,
             })
             litiumapi.litgraphics.newText(substatesNames[substate], 500, 530, 4, 2, 1)
+
+            if joystick ~= nil and settings.getValue("enable_joystick") then
+                litiumapi.litgraphics.newSprite(shell.icons.env.dir_left, 20, 680, 2)
+                litiumapi.litgraphics.newSprite(shell.icons.env.dir_right, 60, 680, 2)
+                litiumapi.litgraphics.newText("change option", 110, 686, 2, 3, 1)
+                litiumapi.litgraphics.newSprite(shell.icons.env.a_button, 240, 680, 1.7)
+                litiumapi.litgraphics.newText("accept", 290, 686, 2, 3, 1)
+            else
+                local controlsText = "[left/right arrow] Change option | [enter] accept"
+                litiumapi.litgraphics.newText(controlsText, 190, 700, 2, 3, 1)
+            end
         end,
         -- Substates --
         ["gamelib"] = function()
@@ -118,21 +157,85 @@ function _render()
                 txtY = txtY + 22
             end
             gamelib_cursor_maxY = txtY
+            if bootloader_isGameLoaded then
+                litiumapi.litgraphics.newText("cart loaded", 1000, 400, 3, 3, 1)
+            end
+            if joystick ~= nil and settings.getValue("enable_joystick") then
+                litiumapi.litgraphics.newSprite(shell.icons.env.dir_up, 230, 680, 2)
+                litiumapi.litgraphics.newSprite(shell.icons.env.dir_down, 260, 680, 2)
+                litiumapi.litgraphics.newText("move cursor", 300, 686, 2, 3, 1)
+                litiumapi.litgraphics.newSprite(shell.icons.env.a_button, 460, 680, 1.7)
+                litiumapi.litgraphics.newText("load game", 490, 686, 2, 3, 1)
+                litiumapi.litgraphics.newSprite(shell.icons.env.y_button, 620, 680, 1.7)
+                litiumapi.litgraphics.newText("unload game", 650, 686, 2, 3, 1)
+                litiumapi.litgraphics.newSprite(shell.icons.env.start_button, 800, 680, 1.7)
+                litiumapi.litgraphics.newText("run game", 830, 686, 2, 3, 1)
+                litiumapi.litgraphics.newSprite(shell.icons.env.select_button, 950, 680, 1.7)
+                litiumapi.litgraphics.newText("reload list", 980, 686, 2, 3, 1)
+            else
+                local controlsText = "[esc] back | [up/down arrow] Move cursor | [f1] play game | [f2] unload game | [enter] load game"
+                litiumapi.litgraphics.newText(controlsText, 20, 700, 2, 3, 1)
+            end
         end,
-
         ["about"] = function()
             styles.desktop.about()
+            about_txt_y = 210
+            for c = 1, #styles.contributors, 1 do
+                litiumapi.litgraphics.newText(styles.contributors[c], 40, about_txt_y, 3, 2, 1)
+                about_txt_y = about_txt_y + 30
+            end
+            if joystick ~= nil and settings.getValue("enable_joystick") then
+                litiumapi.litgraphics.newSprite(shell.icons.env.b_button, 210, 680, 2)
+                litiumapi.litgraphics.newText("back", 250, 686, 2, 3, 1)
+            else
+                local controlsText = "[esc] back"
+                litiumapi.litgraphics.newText(controlsText, 20, 690, 3, 3, 1)
+            end
+            
         end,
-
         ["savemngr"] = function()
             styles.desktop.savemngr()
             storage.renderPage(savemngr_cursor_offset)
-            litiumapi.litgraphics.newSprite(shell.icons.desktop.arrow_l, 0, gamelib_cursor_pos, 1)
+            
+            if #storage.diskdata.partitions > 0 then
+                litiumapi.litgraphics.newSprite(shell.icons.desktop.arrow_l, 0, savemngr_cursor_y, 1)
+            end
+
+            -- info --
+            litiumapi.litgraphics.rect("fill", 840, 60, 512, 100, 5)
+            if savemngr_information ~= nil then
+                litiumapi.litgraphics.newText(savemngr_information.savename, 850, 60, 3, 3, 1)
+                litiumapi.litgraphics.newText(savemngr_information.savedate, 850, 90, 3, 3, 1)
+            end
+
+            if joystick ~= nil and settings.getValue("enable_joystick") then
+                litiumapi.litgraphics.newSprite(shell.icons.env.dir_up, 230, 680, 2)
+                litiumapi.litgraphics.newSprite(shell.icons.env.dir_down, 260, 680, 2)
+                litiumapi.litgraphics.newText("move cursor", 300, 686, 2, 3, 1)
+                litiumapi.litgraphics.newSprite(shell.icons.env.start_button, 400, 680, 1.7)
+                litiumapi.litgraphics.newText("export save", 480, 686, 2, 3, 1)
+                litiumapi.litgraphics.newSprite(shell.icons.env.select_button, 950, 680, 1.7)
+                litiumapi.litgraphics.newText("delete save", 580, 686, 2, 3, 1)
+            else
+                local controlsText = "[esc] back | [up/down arrow] Move cursor | [f1] export save | [f2] delete save"
+                litiumapi.litgraphics.newText(controlsText, 20, 690, 2.5, 3, 1)
+            end
+        end,
+        ["store"] = function()
+            styles.desktop.store()
+
+            if joystick ~= nil and settings.getValue("enable_joystick") then
+                litiumapi.litgraphics.newSprite(shell.icons.env.b_button, 210, 680, 2)
+                litiumapi.litgraphics.newText("back", 250, 686, 2, 3, 1)
+            else
+                local controlsText = "[esc] back"
+                litiumapi.litgraphics.newText(controlsText, 20, 690, 3, 3, 1)
+            end
         end
     })
-    love.graphics.push()
-        litiumapi.litgraphics.newText(substatesTags[substate] .. " " .. substate, 0, 0, 1, 3, 1)
-    love.graphics.pop()
+    if joystick ~= nil and settings.getValue("enable_joystick") then
+        litiumapi.litgraphics.newSprite(shell.icons.desktop.controller_icon, 1200, 640, 4)
+    end
 end 
 
 function _update(elapsed)
@@ -143,7 +246,8 @@ function _update(elapsed)
     switch(state, 
     {
         ["bootloader"] = function()
-            if msElapsed == 3 then
+            loadingBar_tween:update(elapsed)
+            if msElapsed == 2 then
                 if isVersionDifferent then
                     state = "oldversion"
                 elseif bootloader_isGameLoaded then
@@ -156,15 +260,15 @@ function _update(elapsed)
             end
         end,
         ["oldversion"] = function()
-            if litiumapi.litinput.isKeyDown("return") then
+            if litiumapi.litinput.keyboard.isKeyDown("return") then
                 love.event.quit()
             end
         end,
         ["desktop"] = function()
             if substate < 1 then
-                substate = #substatesNames
+                substate = #substatesTags
             end
-            if substate > #substatesNames then
+            if substate > #substatesTags then
                 substate = 1
             end
         end,
@@ -213,14 +317,31 @@ function _update(elapsed)
             end
         end,
         ["savemngr"] = function()
-            storage.update(elapsed)
             if savemngr_cursor_offset < 1 then
                 savemngr_cursor_offset = 1
             end
-            if savemngr_cursor_offset > #storage.listItems then
-                savemngr_cursor_offset = #storage.listItems
+            if savemngr_cursor_offset > #storage.diskdata.partitions - 15 then
+                savemngr_cursor_offset = #storage.diskdata.partitions - 15
             end
-        end
+
+            if savemngr_cursor_saveID < 1 then
+                savemngr_cursor_saveID = 1
+            end
+            if savemngr_cursor_saveID > #storage.diskdata.partitions - 1 then
+                savemngr_cursor_saveID = #storage.diskdata.partitions
+            end
+
+            
+            if savemngr_cursor_y < 60 then
+                savemngr_cursor_y = 60
+            end
+
+            if savemngr_cursor_y > 510 then
+                savemngr_cursor_y = 510
+            end
+
+            savemngr_information = storage.getSaveInfo(savemngr_cursor_saveID)
+        end,
     })
 end
 
@@ -236,7 +357,8 @@ function _keydown(k, code)
             end
             if k == "return" then
                 if substate == 6 then
-                    tempfile = love.filesystem.newFile(".boot.tmp", "w")
+                    tempfile = love.filesystem.newFile("bin/temp/.boot.tmp", "w")
+                    tempfile = io.open(love.filesystem.getSaveDirectory() .. "/bin/temp/.boot.tmp", "w")
                     tempfile:close()
                     love.load()
                 else
@@ -323,16 +445,175 @@ function _keydown(k, code)
                 state = "desktop"
             end
             if k == "up" then
-                savemngr_cursor_offset = savemngr_cursor_offset - 1
+                if #storage.diskdata.partitions > 0 then
+                    if savemngr_cursor_offset > 0 then
+                        if savemngr_cursor_y == 60 then
+                            savemngr_cursor_offset = savemngr_cursor_offset - 1
+                        end
+                        savemngr_cursor_y = savemngr_cursor_y - 30
+                        savemngr_cursor_saveID = savemngr_cursor_saveID - 1
+                    end
+                end
             end
 
             if k == "down" then
-                savemngr_cursor_offset = savemngr_cursor_offset + 1
+                if #storage.diskdata.partitions > 0 then
+                    if savemngr_cursor_offset < #storage.diskdata.partitions then
+                        if savemngr_cursor_y == 510 then
+                            savemngr_cursor_offset = savemngr_cursor_offset + 1
+                        end
+                        savemngr_cursor_y = savemngr_cursor_y + 30
+
+                        savemngr_cursor_saveID = savemngr_cursor_saveID + 1
+                    end
+                end
             end
 
-            if k == "1" then
+            if k == "f1" then
                 storage.export()
             end
+            if k == "f2" then
+                storage.deleteSave(savemngr_cursor_saveID)
+            end
+        end,
+        ["store"] = function()
+            if k == "escape" then
+                state = "desktop"
+            end
         end
+    })
+end
+
+function _gamepaddown(joystick, button)
+    switch(state, 
+    {
+        ["desktop"] = function()
+            if joystick:isGamepadDown("dpleft") or joystick:isGamepadDown("leftshoulder") then
+                substate = substate - 1
+            end
+            if joystick:isGamepadDown("dpright") or joystick:isGamepadDown("rightshoulder") then
+                substate = substate + 1
+            end
+            if joystick:isGamepadDown("a") then
+                if substate == 6 then
+                    tempfile = love.filesystem.newFile(".boot.tmp", "w")
+                    tempfile:close()
+                    love.load()
+                else
+                    state = substatesTags[substate]
+                end
+            end
+        end,
+        ["gamelib"] = function()
+            if joystick:isGamepadDown("dpup") then
+                gamelib_cursor_pos = gamelib_cursor_pos - 22
+                gamelib_cursor = gamelib_cursor - 1
+            end
+            if joystick:isGamepadDown("dpdown") then
+                gamelib_cursor_pos = gamelib_cursor_pos + 22
+                gamelib_cursor = gamelib_cursor + 1
+            end
+            if joystick:isGamepadDown("a") then
+                bootfile = io.open(utils.saveDirectory() .. "/.boot", "w+")
+                bootfile:write(gamenames[gamelib_cursor])
+                bootfile:close()
+                bootloader_isGameLoaded = true
+            end
+            -- unload game --
+            if joystick:isGamepadDown("y") then
+                bootfile = io.open(utils.saveDirectory() .. "/.boot", "w+")
+                bootfile:write("")
+                bootfile:close()
+                bootloader_isGameLoaded = false
+            end
+            -- play game --
+            if joystick:isGamepadDown("start") then
+                if bootloader_isGameLoaded then
+                    timeElapsed = 0
+                    litiumapi.litgraphics.changePallete()
+                    state = "bootloader"
+                end
+            end
+            if joystick:isGamepadDown("back") then
+                gamenames = love.filesystem.getDirectoryItems("carts")
+            end
+            if joystick:isGamepadDown("b") then
+                state = "desktop"
+            end
+        end,
+        ["config"] = function()
+            if joystick:isGamepadDown("dpup") then
+                config_cursor = config_cursor - 1
+                config_cursor_y = config_cursor_y - 30
+            end
+            if joystick:isGamepadDown("dpdown") then
+                config_cursor = config_cursor + 1
+                config_cursor_y = config_cursor_y + 30
+            end
+            if joystick:isGamepadDown("dpright") then
+                if settings.options[config_cursor].type == "num" then
+                    config_cursor_x = config_cursor_x + 1
+                    settings.changeValue(config_cursor, config_cursor_x)
+                end
+            end
+            if joystick:isGamepadDown("dpleft") then
+                if settings.options[config_cursor].type == "num" then
+                    config_cursor_x = config_cursor_x - 1
+                    settings.changeValue(config_cursor, config_cursor_x)                    
+                end
+            end
+            if joystick:isGamepadDown("a") then
+                if settings.options[config_cursor].type == "bool" then
+                    settings.changeBool(config_cursor)
+                end
+                
+            end
+            if joystick:isGamepadDown("b") then
+                settings.saveSettings()
+                state = "desktop"
+            end
+        end,
+        ["savemngr"] = function()
+            if joystick:isGamepadDown("b") then
+                state = "desktop"
+            end
+            if joystick:isGamepadDown("dpup") then
+                if savemngr_cursor_offset > 0 then
+                    if savemngr_cursor_y == 60 then
+                        savemngr_cursor_offset = savemngr_cursor_offset - 1
+                    end
+                    savemngr_cursor_y = savemngr_cursor_y - 30
+                    savemngr_cursor_saveID = savemngr_cursor_saveID - 1
+                end
+            end
+
+            if joystick:isGamepadDown("dpdown") then
+                if savemngr_cursor_offset < #storage.diskdata.partitions then
+                    if savemngr_cursor_y == 510 then
+                        savemngr_cursor_offset = savemngr_cursor_offset + 1
+                    end
+                    savemngr_cursor_y = savemngr_cursor_y + 30
+
+                    savemngr_cursor_saveID = savemngr_cursor_saveID + 1
+                end
+            end
+
+            if joystick:isGamepadDown("start") then
+                storage.export()
+            end
+            if joystick:isGamepadDown("back") then
+                storage.deleteSave(savemngr_cursor_saveID)
+            end
+        end,
+        ["about"] = function()
+            if joystick:isGamepadDown("b") then
+                state = 'desktop'
+            end
+        end,
+        ["store"] = function()
+            if joystick:isGamepadDown("b") then
+                state = 'desktop'
+            end
+        end,
     })
 end

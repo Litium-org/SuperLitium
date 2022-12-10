@@ -12,6 +12,8 @@ function love.load()
     storage             = require 'src.core.virtualization.drivers.nx_storage-dvr'
     nativelocks         = require 'src.core.misc.nx_nativelocks'
 
+    local joysticks = love.joystick.getJoysticks()
+	joystick = joysticks[1]
 
     print("-=[ SuperLitium ]=-")
 
@@ -55,12 +57,30 @@ function love.keypressed(k, code)
         if value == k then
             pcall(cartdata(), _keydown(k, code))
             if k == "home" then
-                
+                local bootfile = io.open(love.filesystem.getSaveDirectory() .. "/.boot", "w")
+                bootfile:write("")
+                bootfile:close()
+                love.load()
             end
         end
     end
 end
 
 function love.quit()
-    love.filesystem.remove(".boot.tmp")
+    love.filesystem.remove("bin/temp/.boot.tmp")
+end
+
+function love.gamepadpressed(jstk, button)
+    if settings.getValue("enable_joystick") then
+        if joystick ~= nil then
+            print("callback running " .. button .. " ")
+            pcall(cartdata(), _gamepaddown(jstk, button))
+            if joystick:isGamepadDown("start") and love.filesystem.read(".boot") ~= "" then
+                local bootfile = io.open(love.filesystem.getSaveDirectory() .. "/.boot", "w")
+                bootfile:write("")
+                bootfile:close()
+                love.load()
+            end
+        end
+    end
 end

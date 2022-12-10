@@ -7,7 +7,7 @@ function _init()
     Text = ""
 
     -- print the logo --
-    terminal.echo("superlitium terminal v " .. returnCurrentVersion())
+    terminal.echo("superlitium terminal v" .. returnCurrentVersion())
     terminal.echo("type 'help' to see all commands")
 end
 
@@ -52,9 +52,10 @@ function checkForAcceptedKeys(keyboardkey)
 end
 
 function generateString()
+    litiumapi.litgraphics.newText(">", 0, 700, terminal.textSize, terminal.textColor, terminal.textBackgroundColor)
     for l = 1, #letters, 1 do
         Text = table.concat(letters, "")
-        litiumapi.litgraphics.newText("> " .. Text, 0, 700, terminal.textSize, terminal.textColor, terminal.textBackgroundColor)
+        litiumapi.litgraphics.newText(Text .. "_", 15, 700, terminal.textSize, terminal.textColor, terminal.textBackgroundColor)
     end
 end
 

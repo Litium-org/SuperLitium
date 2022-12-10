@@ -47,7 +47,8 @@ shell = {
                 {1,1,3,3,3,3,3,1,1},
             },
         },
-        desktop = {}
+        desktop = {},
+        env = {}
     }
 }
 
@@ -61,6 +62,18 @@ shell.icons.desktop.disk = images.importSpriteFile("system/resources/sprites/dis
 shell.icons.desktop.about = images.importSpriteFile("system/resources/sprites/about_icon.spr")
 shell.icons.desktop.save_manager = images.importSpriteFile("system/resources/sprites/save_manager_icon.spr")
 shell.icons.desktop.commandline = images.importSpriteFile("system/resources/sprites/commandline.spr")
+shell.icons.desktop.controller_icon = images.importSpriteFile("system/resources/sprites/controller_icon.spr")
+
+shell.icons.env.x_button = images.importSpriteFile("system/resources/sprites/x-button.spr")
+shell.icons.env.y_button = images.importSpriteFile("system/resources/sprites/y-button.spr")
+shell.icons.env.a_button = images.importSpriteFile("system/resources/sprites/a-button.spr")
+shell.icons.env.b_button = images.importSpriteFile("system/resources/sprites/b-button.spr")
+shell.icons.env.start_button = images.importSpriteFile("system/resources/sprites/start-button.spr")
+shell.icons.env.select_button = images.importSpriteFile("system/resources/sprites/select-button.spr")
+shell.icons.env.dir_up = images.importSpriteFile("system/resources/sprites/dir_up.spr")
+shell.icons.env.dir_down = images.importSpriteFile("system/resources/sprites/dir_down.spr")
+shell.icons.env.dir_left = images.importSpriteFile("system/resources/sprites/dir_left.spr")
+shell.icons.env.dir_right = images.importSpriteFile("system/resources/sprites/dir_right.spr")
 
 
 
