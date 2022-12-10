@@ -27,8 +27,8 @@ local function saveExist(tag)
 end
 
 local function getEngineVersion()
-    litfile = io.open(".litversion", "r")
-    return litfile:read("*all")
+    
+    return love.filesystem.read(".litversion")
 end
 
 
