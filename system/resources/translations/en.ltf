@@ -1,0 +1,24 @@
+[bootloader]
+_load_warning:press [f11] to enter in terminal mode
+
+[hub]
+_date:date : 
+_gamelib:gamelib
+_savemngr:save manager
+_store:litium store
+_config:settings
+_shutdown:shutdown litium
+
+[gamelib]
+_cart_load:cart loaded:
+_info:information
+_load:[enter] to load a game
+_unload:[f1] to unload game
+_play:[f2] to play
+_exit:[escape] to exit
+_gpload:to load a game
+_gpunload:to unload game
+_gpplay:to play
+_gpexit:to exit
+_size:filesize :
+_noinfo:No information

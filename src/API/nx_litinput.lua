@@ -2,8 +2,8 @@ litinput = {}
 litinput.keyboard = {}
 litinput.mouse = {}
 
-keyboard = require 'src.core.virtualization.drivers.nx_keyboard-dvr'
-mouse = require 'src.core.virtualization.drivers.nx_mouse-dvr'
+local keyboard = require 'src.core.virtualization.drivers.nx_keyboard-dvr'
+local mouse = require 'src.core.virtualization.drivers.nx_mouse-dvr'
 
 function litinput.keyboard.isKeyDown(key)
     return keyboard.isKeyDown(key)

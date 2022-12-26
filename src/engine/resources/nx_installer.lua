@@ -7,15 +7,14 @@ fileinstaller = require 'src.engine.resources.installer.nx_filesInstaller'
 saveDir = love.filesystem.getSaveDirectory()
 makeDir = love.filesystem.createDirectory
 
-folderToInstall = {
+local folderToInstall = {
     "carts",
     "bin",
     "bin/temp",
     "bin/data",
-    "bin/apps",
     "bin/projects",
     "bin/server",
-    "bin/scripts/",
+    --"bin/scripts",
     "data",
 }
 

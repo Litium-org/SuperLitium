@@ -1,8 +1,8 @@
 litgraphics = {}
 
-vramPallete = require 'src.core.virtualization.nx_vramPallete'
-Render = require 'src.core.render.nx_render'
-text = require 'src.core.render.nx_text'
+local vramPallete = require 'src.core.virtualization.nx_vramPallete'
+local Render = require 'src.core.render.nx_render'
+local text = require 'src.core.render.nx_text'
 
 ---Create a new Object and can be transformed in Memory
 ---@param sprite table      @ The table with sprite code
@@ -11,6 +11,18 @@ text = require 'src.core.render.nx_text'
 ---@param scale number      @ Scale of pixels
 function litgraphics.newSprite(sprite, x, y, scale)
     Render.drawCall(sprite, x, y, scale)
+end
+
+---Create a new sprite from a .spr file
+---@param sprite table      @ The table with sprite code
+---@param x number          @ X position for place sprite
+---@param y number          @ Y position for place sprite
+---@param scale number      @ Scale of pixels
+function litgraphics.newSpriteFromFile(filename, x, y, scale)
+    local gamename = love.filesystem.read(".boot")
+    local spriteFile = love.filesystem.read("carts/" .. gamename .. "/sprites/" .. filename .. ".spr")
+    local decodeSpriteFile = json.decode(spriteFile)
+    Render.drawCall(decodeSpriteFile, x, y, scale)
 end
 
 --- Create new rectangle (Used for background elements)

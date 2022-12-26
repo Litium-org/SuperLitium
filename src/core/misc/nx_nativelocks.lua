@@ -75,7 +75,6 @@ function nativelocks.lock()
     love.audio.setVelocity = nil
 
     -- sound --
-
     love.sound.newDecoder = nil
 end
 

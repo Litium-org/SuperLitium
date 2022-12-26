@@ -1,6 +1,6 @@
 litsave = {}
 
-storage = require 'src.core.virtualization.drivers.nx_storage-dvr'
+local storage = require 'src.core.virtualization.drivers.nx_storage-dvr'
 
 --- Write to a save slot based on it tag
 ---@param savename string

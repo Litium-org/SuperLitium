@@ -3,11 +3,8 @@ images = {}
 json = require 'libraries.json'
 
 function images.importSpriteFile(name)
-    local spritefile = io.open(name, "r")
-    local raw = spritefile:read("*all")
-
+    local raw = love.filesystem.read(name)
     local sprite = json.decode(raw)
-
     return sprite
 end
 

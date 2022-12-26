@@ -1,9 +1,9 @@
 storage = {}
 
-json = require 'libraries.json'
+local json = require 'libraries.json'
 require 'libraries.json-beautify'
-basexx = require 'libraries.basexx'
-debug = require 'src.debug.nx_debug'
+local basexx = require 'libraries.basexx'
+local debug = require 'src.debug.nx_debug'
 
 
 storage.diskdata = {}       -- this where all file data will be stored, to be modified
@@ -26,18 +26,17 @@ local function saveExist(tag)
     end
 end
 
-local function getEngineVersion()
-    
+local function getEngineVersion()   
     return love.filesystem.read(".litversion")
 end
 
 
 local function doLoad()
     if storage.diskdata ~= nil then
-        slotfile = love.filesystem.read("data/slotdata.slf")
-        raw1 = basexx.from_z85(slotfile)
-        raw2 = basexx.from_base64(raw1)
-        raw3 = basexx.from_base32(raw2)
+        local slotfile = love.filesystem.read("data/slotdata.slf")
+        local raw1 = basexx.from_z85(slotfile)
+        local raw2 = basexx.from_base64(raw1)
+        local raw3 = basexx.from_base32(raw2)
         storage.diskdata = json.decode(raw3)
     end
 end
@@ -45,11 +44,11 @@ end
 local function doSave(id)
     -- write to file --
     if #storage.diskdata.partitions < storage.diskdata.meta.allowedAllocation then
-        slotfile = io.open(love.filesystem.getSaveDirectory() .. "/data/slotdata.slf", "w+")
-        jsonraw = json.encode(storage.diskdata)
-        crypt1 = basexx.to_base32(jsonraw)
-        crypt2 = basexx.to_base64(crypt1)
-        crypt3 = basexx.to_z85(crypt2)
+        local slotfile = io.open(love.filesystem.getSaveDirectory() .. "/data/slotdata.slf", "w+")
+        local jsonraw = json.encode(storage.diskdata)
+        local crypt1 = basexx.to_base32(jsonraw)
+        local crypt2 = basexx.to_base64(crypt1)
+        local crypt3 = basexx.to_z85(crypt2)
         slotfile:write(crypt3)
         slotfile:close()
     end
@@ -73,11 +72,11 @@ function storage.init()
     }
     slotFileInfo = love.filesystem.getInfo("data/slotdata.slf")
     if slotFileInfo == nil then
-        slotfile = love.filesystem.newFile("data/slotdata.slf", "w")
-        saveEncode = json.encode(data)
-        crypt1 = basexx.to_base32(saveEncode)
-        crypt2 = basexx.to_base64(crypt1)
-        crypt3 = basexx.to_z85(crypt2)
+        local slotfile = love.filesystem.newFile("data/slotdata.slf", "w")
+        local saveEncode = json.encode(data)
+        local crypt1 = basexx.to_base32(saveEncode)
+        local crypt2 = basexx.to_base64(crypt1)
+        local crypt3 = basexx.to_z85(crypt2)
         slotfile:write(crypt3)
         slotfile:close()
     end
@@ -99,11 +98,11 @@ function storage.saveData(tag, tablecontent)
     end
     table.insert(storage.diskdata.partitions, saveData)
 
-    slotfile = io.open(love.filesystem.getSaveDirectory() .. "/data/slotdata.slf", "w+")
-    jsonraw = json.encode(storage.diskdata)
-    crypt1 = basexx.to_base32(jsonraw)
-    crypt2 = basexx.to_base64(crypt1)
-    crypt3 = basexx.to_z85(crypt2)
+    local slotfile = io.open(love.filesystem.getSaveDirectory() .. "/data/slotdata.slf", "w+")
+    local jsonraw = json.encode(storage.diskdata)
+    local crypt1 = basexx.to_base32(jsonraw)
+    local crypt2 = basexx.to_base64(crypt1)
+    local crypt3 = basexx.to_z85(crypt2)
     slotfile:write(crypt3)
     slotfile:close()
 
@@ -128,11 +127,11 @@ end
 
 -- functions for internal use --
 function storage.renderPage(PageOffset)
-    txty = 60
+    local txty = 60
     if #storage.diskdata.partitions ~= 0 then
-        for i = PageOffset, 15 + PageOffset, 1 do
-            if storage.diskdata.partitions[i] ~= nil then
-                litiumapi.litgraphics.newText(storage.diskdata.partitions[i].savename, 60, txty, 3, 3, 1)
+        for a = PageOffset, 15 + PageOffset, 1 do
+            if storage.diskdata.partitions[a] ~= nil then
+                litiumapi.litgraphics.newText(storage.diskdata.partitions[a].savename, 60, txty, 3, 3, 1)
                 txty = txty + 30
             end
         end
@@ -151,13 +150,13 @@ function storage.getSaveInfo(id)
 end
 
 function storage.export()
-    slotfile = love.filesystem.read("data/slotdata.slf")
-    raw1 = basexx.from_z85(slotfile)
-    raw2 = basexx.from_base64(raw1)
-    raw3 = basexx.from_base32(raw2)
-    jsonData = json.decode(raw3)
+    local slotfile = love.filesystem.read("data/slotdata.slf")
+    local raw1 = basexx.from_z85(slotfile)
+    local raw2 = basexx.from_base64(raw1)
+    local raw3 = basexx.from_base32(raw2)
+    local jsonData = json.decode(raw3)
 
-    exportedFile = love.filesystem.newFile("data/exportedData.json", "w")
+    local exportedFile = love.filesystem.newFile("data/exportedData.json", "w")
     exportedFile:write(json.beautify(jsonData, {
         newline = "\n",
         indent = "\t",
@@ -171,11 +170,11 @@ function storage.deleteSave(id)
         for svid = 1, #storage.diskdata.partitions, 1 do
             if svid == id then
                 table.remove(storage.diskdata.partitions, svid)
-                slotfile = io.open(love.filesystem.getSaveDirectory() .. "/data/slotdata.slf", "w+")
-                jsonraw = json.encode(storage.diskdata)
-                crypt1 = basexx.to_base32(jsonraw)
-                crypt2 = basexx.to_base64(crypt1)
-                crypt3 = basexx.to_z85(crypt2)
+                local slotfile = io.open(love.filesystem.getSaveDirectory() .. "/data/slotdata.slf", "w+")
+                local jsonraw = json.encode(storage.diskdata)
+                local crypt1 = basexx.to_base32(jsonraw)
+                local crypt2 = basexx.to_base64(crypt1)
+                local crypt3 = basexx.to_z85(crypt2)
                 slotfile:write(crypt3)
                 slotfile:close()
             end

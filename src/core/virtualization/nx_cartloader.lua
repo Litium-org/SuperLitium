@@ -1,7 +1,7 @@
 cartloader = {}
 
 function cartloader.loadCart(cartname)
-    cart, error = love.filesystem.load(cartname)
+    local cart, error = love.filesystem.load(cartname)
     return cart
 end
 
