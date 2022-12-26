@@ -15,8 +15,8 @@ end
 
 function _render()
     litiumapi.litgraphics.changePallete(shell.pallete.neos16)
-    litiumapi.litgraphics.backgroundColor(4)
-    litiumapi.litgraphics.rect("fill", 20, 40, litiumapi.litgraphics.windowWidth() - 540, litiumapi.litgraphics.windowHeight() - 80, 3)
+    litiumapi.litgraphics.backgroundColor(5)
+    litiumapi.litgraphics.rect("fill", 20, 40, litiumapi.litgraphics.windowWidth() - 540, litiumapi.litgraphics.windowHeight() - 80, 4)
     renderGames(gamelib_offset)
     if #gamenames > 0 then
         litiumapi.litgraphics.newSprite(shell.icons.desktop.arrow_l, 30, gamelib_cursor_y, 1)
