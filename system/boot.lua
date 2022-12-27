@@ -16,7 +16,7 @@ function _init()
         icons = {
             shell.icons.desktop.disk,
             shell.icons.desktop.save_manager,
-            shell.icons.desktop.storeIcon,
+            shell.icons.desktop.deskicon_hover,
             shell.icons.desktop.config,
             shell.icons.desktop.turnoff_icon
         },
@@ -34,7 +34,7 @@ function _init()
         states = {
             "__gamelib",
             "__savemngr",
-            "__store",
+            "__profile",
             "__config",
             "shutdown",
         }

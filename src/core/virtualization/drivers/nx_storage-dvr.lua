@@ -3,11 +3,14 @@ storage = {}
 local json = require 'libraries.json'
 require 'libraries.json-beautify'
 local basexx = require 'libraries.basexx'
+local lualzw = require 'libraries.luazlw'
 local debug = require 'src.debug.nx_debug'
 
 
 storage.diskdata = {}       -- this where all file data will be stored, to be modified
 storage.listItems = {}
+storage.maxTxtY = 60
+storage.text = "no save data was found."
 
 local function findSaveByTag(tag)
     for k, savename in pairs(storage.diskdata.partitions) do
@@ -34,10 +37,11 @@ end
 local function doLoad()
     if storage.diskdata ~= nil then
         local slotfile = love.filesystem.read("data/slotdata.slf")
-        local raw1 = basexx.from_z85(slotfile)
-        local raw2 = basexx.from_base64(raw1)
-        local raw3 = basexx.from_base32(raw2)
-        storage.diskdata = json.decode(raw3)
+        local raw1 = lualzw.decompress(slotfile)
+        local raw2 = basexx.from_z85(raw1)
+        local raw3 = basexx.from_base64(raw2)
+        local raw4 = basexx.from_base32(raw3)
+        storage.diskdata = json.decode(raw4)
     end
 end
 
@@ -49,7 +53,8 @@ local function doSave(id)
         local crypt1 = basexx.to_base32(jsonraw)
         local crypt2 = basexx.to_base64(crypt1)
         local crypt3 = basexx.to_z85(crypt2)
-        slotfile:write(crypt3)
+        local crypt4 = lualzw.compress(crypt3)
+        slotfile:write(crypt4)
         slotfile:close()
     end
 end
@@ -61,7 +66,7 @@ local function getSavename()
 end
 
 function storage.init()
-    data = {
+    local data = {
         diskname = "superlitium memory disk",
         meta = {
             lastEngineVersion = getEngineVersion(),
@@ -71,13 +76,15 @@ function storage.init()
         partitions = {}
     }
     slotFileInfo = love.filesystem.getInfo("data/slotdata.slf")
+    print(slotFileInfo)
     if slotFileInfo == nil then
         local slotfile = love.filesystem.newFile("data/slotdata.slf", "w")
         local saveEncode = json.encode(data)
         local crypt1 = basexx.to_base32(saveEncode)
         local crypt2 = basexx.to_base64(crypt1)
         local crypt3 = basexx.to_z85(crypt2)
-        slotfile:write(crypt3)
+        local crypt4 = lualzw.compress(crypt3)
+        slotfile:write(crypt4)
         slotfile:close()
     end
     doLoad()
@@ -103,7 +110,8 @@ function storage.saveData(tag, tablecontent)
     local crypt1 = basexx.to_base32(jsonraw)
     local crypt2 = basexx.to_base64(crypt1)
     local crypt3 = basexx.to_z85(crypt2)
-    slotfile:write(crypt3)
+    local crypt4 = lualzw.compress(crypt3)
+    slotfile:write(crypt4)
     slotfile:close()
 
     --print(debug.showTableContent(storage.diskdata))
@@ -129,14 +137,15 @@ end
 function storage.renderPage(PageOffset)
     local txty = 60
     if #storage.diskdata.partitions ~= 0 then
-        for a = PageOffset, 15 + PageOffset, 1 do
+        for a = PageOffset, 20 + PageOffset, 1 do
             if storage.diskdata.partitions[a] ~= nil then
                 litiumapi.litgraphics.newText(storage.diskdata.partitions[a].savename, 60, txty, 3, 3, 1)
                 txty = txty + 30
             end
         end
+        storage.maxTxtY = txty
     else
-        litiumapi.litgraphics.newText("no save data was found.", 60, 60, 3, 3, 1)
+        litiumapi.litgraphics.newText(storage.text, 60, 60, 3, 3, 1)
     end
 end
 
@@ -154,7 +163,8 @@ function storage.export()
     local raw1 = basexx.from_z85(slotfile)
     local raw2 = basexx.from_base64(raw1)
     local raw3 = basexx.from_base32(raw2)
-    local jsonData = json.decode(raw3)
+    local raw4 = lualzw.decompress(raw3)
+    local jsonData = json.decode(raw4)
 
     local exportedFile = love.filesystem.newFile("data/exportedData.json", "w")
     exportedFile:write(json.beautify(jsonData, {
@@ -175,7 +185,8 @@ function storage.deleteSave(id)
                 local crypt1 = basexx.to_base32(jsonraw)
                 local crypt2 = basexx.to_base64(crypt1)
                 local crypt3 = basexx.to_z85(crypt2)
-                slotfile:write(crypt3)
+                local crypt4 = lualzw.compress(crypt3)
+                slotfile:write(crypt4)
                 slotfile:close()
             end
         end

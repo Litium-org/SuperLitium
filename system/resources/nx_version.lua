@@ -5,7 +5,7 @@ version.isConnectedToNetwork = nil
 
 function version.compare()
     -- do network request and get version from server --
-    local serverVersion, cd = network.newRequest("https://raw.githubusercontent.com/Litium-org/SuperLitium/master/.litversion")
+    local serverVersion, cd = network.newRequest("https://raw.githubusercontent.com/Litium-org/SuperLitium/master-new/.litversion")
         -- get native version file
     local NativeVersion = love.filesystem.read(".litversion")
 

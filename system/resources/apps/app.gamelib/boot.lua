@@ -113,6 +113,8 @@ function _keydown(k, code)
             if gamelib_offset > 0 then
                 if gamelib_cursor_y == 50 then
                     gamelib_offset = gamelib_offset - 1
+                else
+                    print("gamelib_cursor_y == 50")
                 end
                 gamelib_cursor_y = gamelib_cursor_y - 30
                 gamelib_cursorSelection = gamelib_cursorSelection - 1

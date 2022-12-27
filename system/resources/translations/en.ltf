@@ -22,3 +22,12 @@ _gpplay:to play
 _gpexit:to exit
 _size:filesize :
 _noinfo:No information
+
+[savemngr]
+_info:save information
+_delete:[f1] to delete a save
+_export:[f2] to export save
+_exit:[escape] to exit
+_gpdelete:to delete a save
+_gpexport:to export a save
+_gpexit:to exit
