@@ -1,4 +1,8 @@
 _G.onBootLoading = true
+_G.masterVolume = 0
+_G.brightness = 0
+_G.antialiasing = false
+_G.Current_language = "en"
 function love.load()
     love.keyboard.setKeyRepeat(true)
     love.setDeprecationOutput(false)
@@ -14,22 +18,20 @@ function love.load()
     nativelocks         = require 'src.core.misc.nx_nativelocks'
     shell               = require 'system.resources.nx_shell'
     lip                 = require 'libraries.lip'
-    lang_currentLanguage = "en"
 
     -- load translation file --
-    lang_data = lip.load("system/resources/translations/" .. lang_currentLanguage .. ".ltf")
+    lang_data = lip.load("system/resources/translations/" .. _G.Current_language .. ".ltf")
 
     local joysticks = love.joystick.getJoysticks()
 	joystick = joysticks[1]
 
     print("-=[ SuperLitium ]=-")
-    
 
     -- init --
     litiumapi.litgraphics.changePallete()
 
     -- set the volume --
-    --love.audio.setVolume(0.1 * settings.getValue("volume_master"))
+    love.audio.setVolume(0.1 * _G.masterVolume)
 
     -- lock some commands XDDD
     nativelocks.lock()
@@ -45,17 +47,23 @@ function love.load()
 
     -- call init function
     pcall(cartdata(), _init())
+
+    -- antialising --
+    if not _G.antialiasing then
+        love.graphics.setDefaultFilter("nearest", "nearest")
+    else
+        love.graphics.setDefaultFilter("linear", "linear")
+    end
 end
 
 function love.draw()
     love.graphics.clear()
     pcall(cartdata(), _render())
-    --[[
+    
     love.graphics.push()
-        love.graphics.setColor(0, 0, 0, (0.1 * settings.getValue("c_brightness") - 0.1))
+        love.graphics.setColor(0, 0, 0, (0.1 * _G.brightness - 0.1))
         love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
     love.graphics.pop()
-    ]]--
 end
 
 function love.update(elapsed)

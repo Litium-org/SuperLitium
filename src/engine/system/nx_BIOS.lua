@@ -18,6 +18,10 @@ function bios.init()
         return cartloader.loadCart("system/resources/apps/app.gamelib/boot.lua")
     elseif cartname == "__savemngr" then
         return cartloader.loadCart("system/resources/apps/app.save/boot.lua")
+    elseif cartname == "__profile" then
+        return cartloader.loadCart("system/resources/apps/app.profile/boot.lua")
+    elseif cartname == "__config" then
+        return cartloader.loadCart("system/resources/apps/app_settings/boot.lua")
     else
     -- load a real game --
         romSize = love.filesystem.getInfo("carts/" .. cartname .. "/boot.lua")

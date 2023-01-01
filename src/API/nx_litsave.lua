@@ -17,4 +17,10 @@ function litsave.loadSavedata(savename)
     return storage.loadData(savename)
 end
 
+--- Check if a save data exists
+---@param savename string
+function litsave.isSaveExist(savename)
+    return storage.saveExist(savename)
+end
+
 return litsave

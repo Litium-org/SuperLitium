@@ -31,3 +31,14 @@ _exit:[escape] to exit
 _gpdelete:to delete a save
 _gpexport:to export a save
 _gpexit:to exit
+_nosave:no save data was found
+
+[settings]
+_st_brightness:screen brightness
+_st_audio:audio volume
+_st_checkupd:check updates
+_st_antialiasing:antialiasing
+_select:[enter] to change value
+_exit:[escape] to exit
+_gpselect:to change value
+_gpexit:to exit

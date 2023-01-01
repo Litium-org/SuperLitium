@@ -8,6 +8,7 @@ function _init()
     savemngr_cursor_saveID = 1
     savemngr_cursor_y = 60
     savemngr_information = {}
+    storage.text = lang_data.savemngr._nosave
 end
 
 function _render()

@@ -50,7 +50,7 @@ end
 ---@param txtColor number   @ set the text color (1-17)
 ---@param BgColor number    @ set the background of the text color (1-17)
 function litgraphics.newText(string, x, y, scale, txtColor, BgColor)
-    text.drawText(string, x, y, scale, txtColor, BgColor)
+    text.drawText(tostring(string), x, y, scale, txtColor, BgColor)
 end
 
 --- Change the default color pallete

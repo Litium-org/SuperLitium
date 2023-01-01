@@ -3,11 +3,37 @@ function _init()
     version = require 'system.resources.nx_version'
     tween = require 'libraries.tween'
     lip = require 'libraries.lip'
-    lang_currentLanguage = "en"
-
-    -- load translation file --
-    lang_data = lip.load("system/resources/translations/" .. lang_currentLanguage .. ".ltf")
+    
     shell.init()
+
+    data = litiumapi.litsave.loadSavedata("system")
+    if data == nil then
+        data = {
+            {
+                tag = "check_update",
+                enable = true,
+            },
+            {
+                tag = "antialiasing",
+                enable = true,
+            },
+            {
+                tag = "audio_volume",
+                curvalue = 7,
+            },
+            {
+                tag = "brightness",
+                curvalue = 2,
+            },
+        }
+    end
+
+    _G.antialiasing = data[2].enable
+    _G.masterVolume = data[3].curvalue
+    _G.brightness = data[4].curvalue
+    
+    --print(debugcomponent.showTableContent(data))
+
     ---------------------------------
     states = "bootloader"
     bootloader_rand = math.random(1, 10)
@@ -43,7 +69,10 @@ function _init()
     hub_selection = 1
 
     -- check version --
-    version.compare()
+    if data[1].enable then
+        version.compare()
+    end
+    
 end
 
 function _render()
