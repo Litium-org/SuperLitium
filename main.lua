@@ -19,6 +19,17 @@ function love.load()
     shell               = require 'system.resources.nx_shell'
     lip                 = require 'libraries.lip'
 
+    -- main thread for install folders and system components
+    installer.install()
+
+    local langFile = love.filesystem.getInfo("bin/data/lang.data")
+    if langFile == nil then
+        filedata = love.filesystem.newFile("bin/data/lang.data", "w")
+        filedata:write("en")
+        filedata:close()
+    end
+    _G.Current_language = love.filesystem.read("bin/data/lang.data")
+
     -- load translation file --
     lang_data = lip.load("system/resources/translations/" .. _G.Current_language .. ".ltf")
 
@@ -35,9 +46,6 @@ function love.load()
 
     -- lock some commands XDDD
     nativelocks.lock()
-
-    -- main thread for install folders and system components
-    installer.install()
 
     -- cartdrive initialization
     cartdata = bios.init()

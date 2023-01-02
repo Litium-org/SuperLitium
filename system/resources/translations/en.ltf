@@ -5,7 +5,7 @@ _load_warning:press [f11] to enter in terminal mode
 _date:date : 
 _gamelib:gamelib
 _savemngr:save manager
-_store:litium store
+_langSelect:language select
 _config:settings
 _shutdown:shutdown litium
 
@@ -15,7 +15,7 @@ _info:information
 _load:[enter] to load a game
 _unload:[f1] to unload game
 _play:[f2] to play
-_exit:[escape] to exit
+_exit:[esc] to exit
 _gpload:to load a game
 _gpunload:to unload game
 _gpplay:to play
@@ -27,7 +27,7 @@ _noinfo:No information
 _info:save information
 _delete:[f1] to delete a save
 _export:[f2] to export save
-_exit:[escape] to exit
+_exit:[esc] to exit
 _gpdelete:to delete a save
 _gpexport:to export a save
 _gpexit:to exit
@@ -39,6 +39,15 @@ _st_audio:audio volume
 _st_checkupd:check updates
 _st_antialiasing:antialiasing
 _select:[enter] to change value
-_exit:[escape] to exit
+_exit:[esc] to exit
 _gpselect:to change value
+_gpexit:to exit
+
+[language]
+_lg_en:english
+_lg_pt:portuguese
+_lg_es:spanish
+_select:[enter] to select
+_exit:[esc] to exit
+_gpselect:to select
 _gpexit:to exit

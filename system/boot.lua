@@ -42,7 +42,7 @@ function _init()
         icons = {
             shell.icons.desktop.disk,
             shell.icons.desktop.save_manager,
-            shell.icons.desktop.deskicon_hover,
+            shell.icons.desktop.lang_icon,
             shell.icons.desktop.config,
             shell.icons.desktop.turnoff_icon
         },
@@ -53,14 +53,14 @@ function _init()
         names = {
             lang_data.hub._gamelib,
             lang_data.hub._savemngr,
-            lang_data.hub._store,
+            lang_data.hub._langSelect,
             lang_data.hub._config,
             lang_data.hub._shutdown
         },
         states = {
             "__gamelib",
             "__savemngr",
-            "__profile",
+            "__lang",
             "__config",
             "shutdown",
         }
@@ -70,7 +70,11 @@ function _init()
 
     -- check version --
     if data[1].enable then
-        version.compare()
+        isVersionOld = version.compare()
+
+        if isVersionOld then
+            love.filesystem.write(".boot", "___outdate")
+        end
     end
     
 end

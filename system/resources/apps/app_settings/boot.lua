@@ -44,7 +44,7 @@ function _render()
     litiumapi.litgraphics.newText(lang_data.settings._select, 830, 430, 3, 2, 1)
     litiumapi.litgraphics.newText(lang_data.settings._exit, 830, 460, 3, 2, 1)
     
-    if joystick == nil then
+    if joystick ~= nil then
         litiumapi.litgraphics.newText(lang_data.settings._gpselect, 870, 550, 3, 2, 1)
         litiumapi.litgraphics.newText(lang_data.settings._gpexit, 870, 580, 3, 2, 1)
 

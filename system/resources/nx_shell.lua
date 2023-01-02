@@ -66,6 +66,7 @@ function shell.init()
     shell.icons.desktop.commandline = images.importSpriteFile("system/resources/sprites/commandline.spr")
     shell.icons.desktop.controller_icon = images.importSpriteFile("system/resources/sprites/controller_icon.spr")
     shell.icons.desktop.turnoff_icon = images.importSpriteFile("system/resources/sprites/turnoff_icon.spr")
+    shell.icons.desktop.lang_icon = images.importSpriteFile("system/resources/sprites/lang_icon.spr")
     
     shell.icons.env.x_button = images.importSpriteFile("system/resources/sprites/x-button.spr")
     shell.icons.env.y_button = images.importSpriteFile("system/resources/sprites/y-button.spr")

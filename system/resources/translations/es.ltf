@@ -1,0 +1,53 @@
+[bootloader]
+_load_warning:pressione [f11] para acessar o terminal
+
+[hub]
+_date:date : 
+_gamelib:gamelib
+_savemngr:gerenciador de saves
+_langSelect:seletor de idiomas
+_config:configuracoes
+_shutdown:desligar litium
+
+[gamelib]
+_cart_load:jogo carregado:
+_info:informacao
+_load:[enter] para carregar
+_unload:[f1] para descarregar
+_play:[f2] para jogar
+_exit:[esc] para sair
+_gpload:to load a game
+_gpunload:to unload game
+_gpplay:to play
+_gpexit:to exit
+_size:tamanho :
+_noinfo:sem informacao
+
+[savemngr]
+_info:informacoes do save
+_delete:[f1] deletar um save
+_export:[f2] exportar o save
+_exit:[esc] para sair
+_gpdelete:deletar um save
+_gpexport:exportar o save
+_gpexit:para sair
+_nosave:nenhum save encontrado
+
+[settings]
+_st_brightness:brilho
+_st_audio:volume mestre
+_st_checkupd:checar atualizacoes
+_st_antialiasing:antiserrilhado
+_select:[enter] para selecionar
+_exit:[esc] para sair
+_gpselect:para selecionar
+_gpexit:para sair
+
+[language]
+_lg_en:ingles
+_lg_pt:portugues
+_lg_es:espanhol
+_select:[enter] para selecionar
+_exit:[esc] para sair
+_gpselect:para selecionar
+_gpexit:para sair
