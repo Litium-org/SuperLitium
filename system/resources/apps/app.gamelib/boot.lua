@@ -20,19 +20,14 @@ function _render()
     renderGames(gamelib_offset)
     if #gamenames > 0 then
         litiumapi.litgraphics.newSprite(shell.icons.desktop.arrow_l, 30, gamelib_cursor_y, 1)
+        if iconData ~= nil then
+            IconData = json.decode(iconData)
+            litiumapi.litgraphics.newSprite(IconData, 940, 100, 8)
+        else
+            litiumapi.litgraphics.newSprite(shell.icons.env.iconNotFound, 940, 100, 8)
+        end
     else
-        litiumapi.litgraphics.newText("no games installed", 0, 0, 3, 2, 1)
-    end
-    iconData = love.filesystem.read("carts/" .. gamenames[gamelib_cursorSelection] .. "/icon.spr")
-    if iconData ~= nil then
-        IconData = json.decode(iconData)
-        litiumapi.litgraphics.newSprite(IconData, 940, 100, 8)
-    else
-        litiumapi.litgraphics.newSprite(shell.icons.env.iconNotFound, 940, 100, 8)
-    end
-    litiumapi.litgraphics.newText(gamenames[gamelib_cursorSelection], 890, 300, 5, 2, 1)
-    if gamelib_isCartLoaded then
-        litiumapi.litgraphics.newText(lang_data.gamelib._cart_load .. gamenames[gamelib_cursorSelected], 870, 400, 3, 4, 2)
+        litiumapi.litgraphics.newText("no games installed", 50, 50, 3, 2, 1)
     end
     litiumapi.litgraphics.newText(lang_data.gamelib._load, 870, 430, 3, 2, 1)
     litiumapi.litgraphics.newText(lang_data.gamelib._unload, 870, 460, 3, 2, 1)
@@ -52,9 +47,9 @@ function _render()
 
     litiumapi.litgraphics.newText(lang_data.gamelib._info, 890, 50, 3, 2, 1)
     if gamelib_gamefile.size == nil then
-        litiumapi.litgraphics.newText(lang_data.gamelib._size .. lang_data.gamelib._noinfo, 890, 350, 3, 2, 1)
+        litiumapi.litgraphics.newText(lang_data.gamelib._size .. lang_data.gamelib._noinfo, 820, 350, 3, 2, 1)
     else
-        litiumapi.litgraphics.newText(lang_data.gamelib._size .. bytesToSize(gamelib_gamefile.size), 890, 350, 3, 2, 1)
+        litiumapi.litgraphics.newText(lang_data.gamelib._size .. bytesToSize(gamelib_gamefile.size), 820, 350, 3, 2, 1)
     end
 end
 

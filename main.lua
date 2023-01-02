@@ -31,7 +31,7 @@ function love.load()
     _G.Current_language = love.filesystem.read("bin/data/lang.data")
 
     -- load translation file --
-    lang_data = lip.load("system/resources/translations/" .. _G.Current_language .. ".ltf")
+    lang_data = lip.parse("translations/" .. _G.Current_language .. ".ltf")
 
     local joysticks = love.joystick.getJoysticks()
 	joystick = joysticks[1]
