@@ -5,7 +5,7 @@ function soundthread.newTone(freq, wavelength, type)
     local rate      = 44100 
     local length    = wavelength / 32 
     local tone      = freq
-    local phase     = math.floor(rate / tone) 
+    local phase     = math.floor(rate / tone)  
     local soundData = love.sound.newSoundData(math.floor(length * rate), rate, 16, 1)
     for i = 0, soundData:getSampleCount() - 1 do
         switch(type, 
@@ -22,7 +22,7 @@ function soundthread.newTone(freq, wavelength, type)
         })
     end
     snd = love.audio.newSource(soundData)
-    return snd
+    snd:play()
 end
 
 return soundthread

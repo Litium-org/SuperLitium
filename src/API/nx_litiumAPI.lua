@@ -13,5 +13,7 @@ litiumapi.litnetwork = require 'src.API.nx_litnetwork'
 litiumapi.litinput = require 'src.API.nx_litinput'
 ---Litium save module
 litiumapi.litsave = require 'src.API.nx_litsave'
+---Litium audio module
+litiumapi.litaudio = require 'src.API.nx_litaudio'
 
 return litiumapi
