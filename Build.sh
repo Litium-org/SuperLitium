@@ -11,16 +11,33 @@ LUA_HTTPS="/usr/lib64/lua/$LUA_VERS/"
 
 # constants, fell free to change
 readonly WORKING_DIRECTORY=$(pwd)
-readonly TRY_GIT_PULL=false
+readonly TRY_GIT_PULL=false # try to git pull to update branch when building [Not recommended]
 readonly GREEN='\033[0;32m' # Green output color
-readonly YELLOW='\033[1;33m'
-readonly CYAN='\033[3;36m'
+readonly YELLOW='\033[1;33m' # Yellow output color
+readonly CYAN='\033[3;36m' # Cyan output color
 readonly NC='\033[0m' # No Color
 
 # init/update submodules
 git submodule update --init
 
-# lua-https module (love)
+# call yesno option
+yesno() {
+   	read -p "Do you wish to install anyway? [Y/n] " YN
+    	case $YN in
+        	[Yy]* ) return 0;;
+        	[Nn]* ) return 1;;
+		* ) echo "Please answer y or n."; yesno;;
+	esac
+}
+# try to update if gitpull true
+update(){
+        if $TRY_GIT_PULL ; then
+                git pull
+        else
+                echo -e "${GREEN}[$(date +"%H:%M")]:${NC} Not checking for updates"
+        fi
+}
+# lua-https module compile (love)
 lua-https() {
         echo -e "${GREEN}[$(date +"%H:%M")]:${NC} Building lua-https..."
         cd libraries/lua-https/
@@ -58,33 +75,17 @@ lua-https() {
         cd $WORKING_DIRECTORY
 }
 
-update(){
-        if $TRY_GIT_PULL ; then
-                git pull
-        else
-                echo -e "${GREEN}[$(date +"%H:%M")]:${NC} Not checking for updates"
-        fi
-}
-
 compile(){
-        if [ -e Litium.love ]
+        if [ -e SuperLitium.love ]
         then 
-        	rm -v Litium.love
+        	rm -v SuperLitium.love
         fi
 
         # exclude unnecessary files to build	build directories, build and boot scripts, and non necessary files
         TO_EXCLUDE="*.sh build/ *.md *.txt CHANGELOG *.cmd .gitignore .gitmodules .litversion .git *.love"
-        zip -9 -x $TO_EXCLUDE -r Litium.love .
+        zip -9 -x $TO_EXCLUDE -r SuperLitium.love .
         echo ""
-        echo -e "${GREEN}[$(date +"%H:%M")]:${CYAN} Litium.love ${NC}successfully build"
-}
-yesno() {
-   	read -p "Do you wish to install anyway? [Y/n] " YN
-    	case $YN in
-        	[Yy]* ) return 0;;
-        	[Nn]* ) return 1;;
-		* ) echo "Please answer y or n."; yesno;;
-	esac
+        echo -e "${GREEN}[$(date +"%H:%M")]:${CYAN} SuperLitium.love ${NC}successfully build"
 }
 
 #func calls
