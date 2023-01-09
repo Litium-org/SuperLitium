@@ -3,14 +3,16 @@
 
 # @TODO : add an build option for https lua 5.1, build folder and cache cleaning, pretty late rn, gonna sleep
 # init/update submodules
-git submodule update --init
 if [ -d build/ ]
 then
 	rm -rdv build/
-	mkdir build/
+	mkdir build
+	mkdir build/lua-https
 else
-	mkdir build/
+	mkdir build
+	mkdir build/lua-https
 fi
+git submodule update --init
 ## steps:
 ## 	Satisfy dependencies
 ## 	Update on run
@@ -48,17 +50,19 @@ update(){
 # lua-https module compile (love)
 lua-https() {
         echo -e "${GREEN}[$(date +"%H:%M")]:${NC} Building lua-https..."
-        cd libraries/lua-https/
+        cd build/lua-https/
         #cmake error handling
         if cmake -Bbuild -S. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PWD\install ; then
         	echo -e "${GREEN}[$(date +"%H:%M")]:${NC} Cmake done"
         else
-        	echo -e "${GREEN}[$(date +"%H:%M")]:${NC} Cmake error, quitting"
+        	echo -e "${GREEN}[$(date +"%H:%M")]:${NC} Cmake error, quitting...."
+        	cd $WORKING_DIRECTORY
+        	rm -rd build/
         	exit
         fi
         cmake --build build --target install
         cd ..
-
+	# Checks if already have an lua https on lib64, if not, copy builded files to lib64
         echo -e "${GREEN}[$(date +"%H:%M")]:${NC} sudo password needed to copy lib file to ${YELLOW}$LUA_HTTPS ${NC}and ${YELLOW}/usr/lib64/lua/5.1/ "
         if [ ! -d /usr/lib64/lua/5.1/ ] || [ ! -d $LUA_HTTPS ]
        	then
@@ -78,9 +82,10 @@ lua-https() {
         	echo -e "${GREEN}[$(date +"%H:%M")]:${NC} No file copied to lib destination: /usr/lib64/lua/5.1/"
         fi
 	
-        echo "done" > lua-https/done.txt
         echo -e "${GREEN}[$(date +"%H:%M")]:${NC} Module [ lua-https ] installed "
         cd $WORKING_DIRECTORY
+        echo "lua-https = done" > libraries/instdep
+	echo "Overridetest = done" > libraries/instdep
 }
 
 compile(){
