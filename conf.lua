@@ -26,5 +26,5 @@ function love.conf(w)
     w.modules.video         = false              -- Enable the video module (boolean)
     w.modules.window        = true             -- Enable the window module (boolean)
 
-
+    w.version               = 11.4           -- Specified a version because some dependencies problems
 end

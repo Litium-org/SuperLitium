@@ -1,9 +1,20 @@
 #!/bin/bash
-## @author : Dyp1xy
-#
-## Satisfy dependencies
-## Update on run
-## Compilation
+## @author : Dyp1xy : https://github.com/DYPIXY
+
+# @TODO : add an build option for https lua 5.1, build folder and cache cleaning, pretty late rn, gonna sleep
+# init/update submodules
+git submodule update --init
+if [ -d build/ ]
+then
+	rm -rdv build/
+	mkdir build/
+else
+	mkdir build/
+fi
+## steps:
+## 	Satisfy dependencies
+## 	Update on run
+## 	Build
 # constructors
 
 LUA_VERS=$(lua -v > build/lua_version | awk '{ print substr($2,1,3)}' build/lua_version)
@@ -16,9 +27,6 @@ readonly GREEN='\033[0;32m' # Green output color
 readonly YELLOW='\033[1;33m' # Yellow output color
 readonly CYAN='\033[3;36m' # Cyan output color
 readonly NC='\033[0m' # No Color
-
-# init/update submodules
-git submodule update --init
 
 # call yesno option
 yesno() {
