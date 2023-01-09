@@ -38,6 +38,7 @@ _st_brightness:screen brightness
 _st_audio:audio volume
 _st_checkupd:check updates
 _st_antialiasing:antialiasing
+_st_allow_sounds:allow system sounds
 _select:[enter] to change value
 _exit:[esc] to exit
 _gpselect:to change value
@@ -51,3 +52,9 @@ _select:[enter] to select
 _exit:[esc] to exit
 _gpselect:to select
 _gpexit:to exit
+
+[outdated]
+_title:your superlitium is outdated!
+_paragraph1:please go to gamejolt page and download
+_paragraph2:the most recent build
+_footer:press [enter] to shutdown litium

@@ -28,9 +28,9 @@ function _init()
         }
     end
 
-    _G.antialiasing = data[2].enable
-    _G.masterVolume = data[3].curvalue
-    _G.brightness = data[4].curvalue
+    _G.antialiasing = data[2].enable or false
+    _G.masterVolume = data[3].curvalue or 0
+    _G.brightness = data[4].curvalue or 0
     
     --print(debugcomponent.showTableContent(data))
 
@@ -71,16 +71,17 @@ function _init()
     -- check version --
     if data[1].enable then
         isVersionOld = version.compare()
-
+        print(isVersionOld)
         if isVersionOld then
-            love.filesystem.write(".boot", "___outdate")
+            love.filesystem.write(".boot", "___outdated")
+            love.load()
         end
     end
-    
 end
 
 function _render()
-    switch(states, {
+    switch(states, 
+    {
         ["bootloader"] = function()
             if bootloader_rand < 4 then
                 litiumapi.litgraphics.newSprite(shell.icons.bootloader.litlogoEasterEgg, (utils.screenWidth / 2) - 50, (utils.screenHeight / 2) - 80, 8)

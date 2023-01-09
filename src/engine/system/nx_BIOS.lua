@@ -20,6 +20,8 @@ function bios.init()
         return cartloader.loadCart("system/resources/apps/app.save/boot.lua")
     elseif cartname == "__lang" then
         return cartloader.loadCart("system/resources/apps/app.language/boot.lua")
+    elseif cartname == "___outdated" then
+        return cartloader.loadCart("system/resources/apps/sys.outdated/boot.lua")
     elseif cartname == "__config" then
         return cartloader.loadCart("system/resources/apps/app_settings/boot.lua")
     else

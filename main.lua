@@ -4,6 +4,8 @@ _G.brightness = 0
 _G.antialiasing = false
 _G.Current_language = "en"
 function love.load()
+    math.randomseed(os.time())
+
     love.keyboard.setKeyRepeat(true)
     love.setDeprecationOutput(false)
     https               = require 'https'

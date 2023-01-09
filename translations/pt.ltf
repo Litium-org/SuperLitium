@@ -38,6 +38,7 @@ _st_brightness:brilho
 _st_audio:volume mestre
 _st_checkupd:checar atualizacoes
 _st_antialiasing:antiserrilhado
+_st_allow_sounds:permitir sons
 _select:[enter] para selecionar
 _exit:[esc] para sair
 _gpselect:para selecionar
@@ -51,3 +52,9 @@ _select:[enter] para selecionar
 _exit:[esc] para sair
 _gpselect:para selecionar
 _gpexit:para sair
+
+[outdated]
+_title:seu superlitium esta desatualizado!
+_paragraph1:por favor va ate a pagina do gamejolt
+_paragraph2:e baixe a versao mais recente
+_footer:pressione [enter] para desligar o litium

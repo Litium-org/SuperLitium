@@ -36,9 +36,9 @@ function version.compare()
         local sv_PATCH = tonumber(sv[3])
 
         --- lower
-        if sv_MAJOR > nv_MAJOR 
-        or sv_MINOR > nv_MINOR 
-        or sv_PATCH > nv_PATCH 
+        if sv_MAJOR < nv_MAJOR 
+        and sv_MINOR < nv_MINOR 
+        and sv_PATCH < nv_PATCH 
         then
             return true
         else
@@ -46,12 +46,13 @@ function version.compare()
         end
 
         --- greater
+        --[[
         if sv_MAJOR < nv_MAJOR 
         or sv_MINOR < nv_MINOR 
         or sv_PATCH < nv_PATCH 
         then
             return false
-        end
+        end]]--
     else
         print("---------------------------------")
         print("Litium.Error - Can't fetch server version data")

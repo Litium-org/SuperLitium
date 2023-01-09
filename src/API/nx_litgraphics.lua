@@ -18,11 +18,18 @@ end
 ---@param x number          @ X position for place sprite
 ---@param y number          @ Y position for place sprite
 ---@param scale number      @ Scale of pixels
-function litgraphics.newSpriteFromFile(filename, x, y, scale)
+function litgraphics.loadSpriteFile(filename)
     local gamename = love.filesystem.read(".boot")
-    local spriteFile = love.filesystem.read("carts/" .. gamename .. "/sprites/" .. filename .. ".spr")
+    local spriteFile = love.filesystem.read("carts/" .. gamename .. "/" .. filename .. ".spr")
     local decodeSpriteFile = json.decode(spriteFile)
-    Render.drawCall(decodeSpriteFile, x, y, scale)
+    return decodeSpriteFile
+end
+
+function litgraphics.loadPalleteFile(filename)
+    local gamename = love.filesystem.read(".boot")
+    local palleteFile = love.filesystem.read("carts/" .. gamename .. "/" .. filename .. ".plt")
+    local decodeSpriteFile = json.decode(palleteFile)
+    return decodeSpriteFile
 end
 
 --- Create new rectangle (Used for background elements)
@@ -79,6 +86,13 @@ end
 ---@return number @ Window height
 function litgraphics.windowHeight()
     return love.graphics.getHeight()
+end
+
+--- Return screen width and height
+---@return number @ Window width
+---@return number @ Window height
+function litgraphics.getWindowSize()
+    return love.graphics.getWidth(), love.graphics.getHeight()
 end
 
 return litgraphics
