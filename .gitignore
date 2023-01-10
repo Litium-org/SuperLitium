@@ -5,7 +5,7 @@ test2.lua
 archive/
 .restore
 SuperLitium.love
+release/
 
 # linux only files
-
 libraries/instdep
