@@ -30,21 +30,29 @@ A cool imaginary and retro styled game console and game framework
 
 
 ## Building Linux
-<p> Install <strong>love ^11.4 </strong>  
-dependency </p>
+### you can just download a pre-builded version on "realeases"
+<p> Install <strong>love ^11.4 </strong>
+and <Strong>SuperLitium</strong> dependencies </p>
+<ul>
+  <li>Love</li>
+  <li>lua51</li>
+  <li>lua</li>
+  <li>luajit</li>
+  <li>cmake</li>
+</ul>
 
 ### Arch based
 ```
-sudo pacman -S love lua5.1
+sudo pacman -S love lua51 lua cmake luajit
 ```
 ### Debian
 ```
-sudo apt-get install love lua5.1
+sudo apt-get install love lua5.1 lua cmake luajit
 ```
 <sub>* Not tested</sub>
 ### Fedora, CentOs, RPM package based
 ```
-sudo dnf install love lua5.1 lua-devel lua5.1-devel libcurl-devel
+sudo dnf install love lua5.1 lua-devel lua5.1-devel libcurl-devel cmake luajit
 ```
 <p> <h3> How to execute </h3> 
 Change shell script file permission

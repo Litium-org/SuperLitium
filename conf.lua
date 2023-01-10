@@ -25,4 +25,6 @@ function love.conf(w)
     w.modules.touch         = false              -- Enable the touch module (boolean)
     w.modules.video         = false              -- Enable the video module (boolean)
     w.modules.window        = true             -- Enable the window module (boolean)
+
+    w.version               = 11.4           -- Specified a version because some dependencies problems
 end
