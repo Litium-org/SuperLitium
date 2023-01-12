@@ -1,3 +1,3 @@
 #!/bin/bash
 clear
-love $(pwd)
+love .
