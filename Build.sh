@@ -108,8 +108,9 @@ compile(){
 	cd release
 
         # exclude unnecessary files to build	build directories, build and boot scripts, and non necessary files
-        TO_EXCLUDE="*../.sh build/ ../*.md ../CHECKSUM ../CHANGELOG ../boot.cmd ../.gitignore ../.gitmodules ../.litversion ../.git/* ../release/ ../boot.cmd ../push.cmd"
-        zip -9 -x $TO_EXCLUDE -r $ENGINE_NAME ..
+        # add and remove then copypaste (to make things better)
+        # -x ".git/*" -x "build/*" -x "*.sh" -x "snap/*" -x "relase/*" -x "*.md" -x "CHECKSUM" -x ".gitignore" -x ".gitmodules" -x "*.cmd" -x ".vscode/*"
+        zip -9 -x ".git/*" -x "build/*" -x "*.sh" -x "snap/*" -x "relase/*" -x "*.md" -x "CHECKSUM" -x ".gitignore" -x ".gitmodules" -x "*.cmd" -x ".vscode/*" -r release/SuperLitium.love .
 	echo -e "${GREEN}[$(date +"%H:%M")]:${CYAN} $ENGINE_NAME ${NC}Successfully build"
 	cd $WORKING_DIRECTORY
 }
