@@ -85,5 +85,6 @@ Everyone who helps will be credited here (social media or Github page)
 - ### [lua-https - Love2D](https://github.com/love2d/lua-https)
 
 ---
-## Social media
+## External links
 ### [Discord server](https://discord.gg/gcscYemUeY)
+### [Install VSCode Extention](https://marketplace.visualstudio.com/items?itemName=Sloow001.superlitium-snippets&ssr=false#review-details)
