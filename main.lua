@@ -1,10 +1,7 @@
-_G.onBootLoading = true
-_G.masterVolume = 0
-_G.brightness = 0
-_G.antialiasing = false
-_G.Current_language = "en"
+_G.path = ""
 function love.load()
     math.randomseed(os.time())
+    love.graphics.setDefaultFilter("nearest", "nearest")
 
     love.keyboard.setKeyRepeat(true)
     love.setDeprecationOutput(false)
@@ -14,26 +11,16 @@ function love.load()
     litiumapi           = require 'src.API.nx_litiumAPI'
     keyboard            = require 'src.core.virtualization.drivers.nx_keyboard-dvr'
     cartloader          = require 'src.core.virtualization.nx_cartloader'
-    bios                = require 'src.engine.system.nx_bios'
+    --bios                = require 'src.engine.system.nx_bios'
     switch              = require 'libraries.switch'
     storage             = require 'src.core.virtualization.drivers.nx_storage-dvr'
     nativelocks         = require 'src.core.misc.nx_nativelocks'
     shell               = require 'system.resources.nx_shell'
     lip                 = require 'libraries.lip'
+    fs                  = require 'libraries.nativefs'
 
     -- main thread for install folders and system components
     installer.install()
-
-    local langFile = love.filesystem.getInfo("bin/data/lang.data")
-    if langFile == nil then
-        filedata = love.filesystem.newFile("bin/data/lang.data", "w")
-        filedata:write("en")
-        filedata:close()
-    end
-    _G.Current_language = love.filesystem.read("bin/data/lang.data")
-
-    -- load translation file --
-    lang_data = lip.parse("translations/" .. _G.Current_language .. ".ltf")
 
     local joysticks = love.joystick.getJoysticks()
 	joystick = joysticks[1]
@@ -43,69 +30,79 @@ function love.load()
     -- init --
     litiumapi.litgraphics.changePallete()
 
-    -- set the volume --
-    love.audio.setVolume(0.1 * _G.masterVolume)
-
     -- lock some commands XDDD
     nativelocks.lock()
 
     -- cartdrive initialization
-    cartdata = bios.init()
+    --cartdata = bios.init()
 
     -- create storage file 
     storage.init()
 
     -- call init function
-    pcall(cartdata(), _init())
-
-    -- antialising --
-    if not _G.antialiasing then
-        love.graphics.setDefaultFilter("nearest", "nearest")
-    else
-        love.graphics.setDefaultFilter("linear", "linear")
+    if cartdata ~= nil then
+        pcall(cartdata(), _init())
     end
 end
 
 function love.draw()
     love.graphics.clear()
-    pcall(cartdata(), _render())
-    
-    love.graphics.push()
-        love.graphics.setColor(0, 0, 0, (0.1 * _G.brightness - 0.1))
-        love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
-    love.graphics.pop()
+    if cartdata ~= nil then
+        pcall(cartdata(), _render())
+    else
+        litiumapi.litgraphics.newText("No game loaded", 480, 200, 3, 3, 1)
+        litiumapi.litgraphics.newText("drag 'n drop a folder with a valid game", 280, 280, 3, 3, 1)
+        litiumapi.litgraphics.newSprite(shell.icons.bootloader.litlogo, 370, 170, 8)
+    end
 end
 
 function love.update(elapsed)
-    pcall(cartdata(), _update(elapsed))
+    if cartdata ~= nil then
+        pcall(cartdata(), _update(elapsed))
+    end
 end
 
 function love.keypressed(k, code)
     for key, value in pairs(keyboard.keys) do
         if value == k then
-            pcall(cartdata(), _keydown(k, code))
+            if cartdata ~= nil then
+                pcall(cartdata(), _keydown(k, code))
+            end
             if k == "home" then
-                love.filesystem.write(".boot", "")  
+                cartdata = nil
                 love.load()
             end
         end
     end
 end
 
+--[[
 function love.quit()
     love.filesystem.remove("bin/temp/.boot.tmp")
     love.filesystem.write(".boot", "")
 end
-
+]]--
 function love.gamepadpressed(jstk, button)
     if joystick ~= nil then
         print("callback running " .. button .. " ")
-        pcall(cartdata(), _gamepaddown(jstk, button))
-        if joystick:isGamepadDown("start") and love.filesystem.read(".boot") ~= "" then
-            local bootfile = io.open(love.filesystem.getSaveDirectory() .. "/.boot", "w")
-            bootfile:write("")
-            bootfile:close()
+        if cartdata ~= nil then
+            pcall(cartdata(), _gamepaddown(jstk, button))
+        end
+        if joystick:isGamepadDown("start") and cartdata ~= nil then
+            cartdata = nil
             love.load()
         end
+    end
+end
+
+function love.directorydropped(path)
+    cartdata, error = fs.load(path .. "/" .. "boot.lua")
+    if error ~= nil then
+        print(error)
+    end
+    -- call init function
+    if cartdata ~= nil then
+        _G.path = path
+        pcall(cartdata(), _init())
     end
 end

@@ -2,7 +2,7 @@ function love.conf(w)
     w.window.width          = 1280
     w.window.height         = 720
     w.window.icon           = "assets/icon.png"
-    w.window.title          = "Powered With SuperLitium"
+    w.window.title          = "Superlitium Player"
     w.console               = true
     w.identity              = "superLitium"
     w.window.resizable      = false 

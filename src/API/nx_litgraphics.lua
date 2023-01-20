@@ -19,15 +19,13 @@ end
 ---@param y number          @ Y position for place sprite
 ---@param scale number      @ Scale of pixels
 function litgraphics.loadSpriteFile(filename)
-    local gamename = love.filesystem.read(".boot")
-    local spriteFile = love.filesystem.read("carts/" .. gamename .. "/" .. filename .. ".spr")
+    local spriteFile = fs.read(_G.path .. "/" .. filename .. ".spr")
     local decodeSpriteFile = json.decode(spriteFile)
     return decodeSpriteFile
 end
 
 function litgraphics.loadPalleteFile(filename)
-    local gamename = love.filesystem.read(".boot")
-    local palleteFile = love.filesystem.read("carts/" .. gamename .. "/" .. filename .. ".plt")
+    local spriteFile = fs.read(_G.path .. "/" .. filename .. ".plt")
     local decodeSpriteFile = json.decode(palleteFile)
     return decodeSpriteFile
 end

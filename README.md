@@ -83,6 +83,7 @@ Everyone who helps will be credited here (social media or Github page)
 - ### [Json - actboy168](https://github.com/actboy168/json.lua)
 - ### [Basexx - aiq](https://github.com/aiq/basexx)
 - ### [lua-https - Love2D](https://github.com/love2d/lua-https)
+- ### [NativeFS](https://github.com/EngineerSmith/nativefs)
 
 ---
 ## External links
