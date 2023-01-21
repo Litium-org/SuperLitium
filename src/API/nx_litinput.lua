@@ -1,9 +1,11 @@
 litinput = {}
 litinput.keyboard = {}
 litinput.mouse = {}
+litinput.gamepad = {}
 
 local keyboard = require 'src.core.virtualization.drivers.nx_keyboard-dvr'
 local mouse = require 'src.core.virtualization.drivers.nx_mouse-dvr'
+local gamepad = require 'src.core.virtualization.drivers.nx_gamepad'
 
 function litinput.keyboard.isKeyDown(key)
     return keyboard.isKeyDown(key)
@@ -15,6 +17,14 @@ end
 
 function litinput.mouse.getMousePosition()
     return mouse.getMousePos()
+end
+
+function litinput.gamepad.isButtonPressed(button)
+    return gamepad.isdown(button)
+end
+
+function litinput.gamepad.getAxis(axisName)
+    
 end
 
 return litinput
