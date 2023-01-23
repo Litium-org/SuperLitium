@@ -11,15 +11,14 @@ function love.load()
     litiumapi           = require 'src.API.nx_litiumAPI'
     keyboard            = require 'src.core.virtualization.drivers.nx_keyboard-dvr'
     cartloader          = require 'src.core.virtualization.nx_cartloader'
-    --bios                = require 'src.engine.system.nx_bios'
     switch              = require 'libraries.switch'
     storage             = require 'src.core.virtualization.drivers.nx_storage-dvr'
     nativelocks         = require 'src.core.misc.nx_nativelocks'
     shell               = require 'system.resources.nx_shell'
     lip                 = require 'libraries.lip'
     fs                  = require 'libraries.nativefs'
+    discordrpc          = require 'libraries.discordRPC'
 
-    txt = ""
     bootloader_rand = math.random(1, 10)
     showCredits = false
     isError = false
@@ -29,7 +28,17 @@ function love.load()
     }
 
     -- main thread for install folders and system components
-    installer.install()
+    --installer.install()
+
+    discordrpc.initialize("1066839658232828004", false, nil)
+    discordrpc.clearPresence()
+    presence = {
+        state = "Waiting for game",
+        details = "The user doesn't load any game",
+        largeImageKey = "litlogo",
+        largeImageText = "Superlitium"
+    }
+    discordrpc.updatePresence(presence)
 
     local joysticks = love.joystick.getJoysticks()
 	joystick = joysticks[1]
@@ -72,7 +81,7 @@ function love.draw()
                 txty = txty + 30
             end
         end
-        if isError or not isErrorOnFunction then
+        if isError then
             litiumapi.litgraphics.backgroundColor(7)
             txt1 = "invalid game detected!"
             txt2 = "please drag'n drop a valid game"
@@ -123,19 +132,28 @@ function love.gamepadpressed(jstk, button)
     end
 end
 
+function love.quit()
+    discordrpc.shutdown()
+end
+
 function love.directorydropped(path)
     cartdata, error = fs.load(path .. "/" .. "boot.lua")
     if error ~= nil then
         isError = true
-        print(error)
+        --print(error)
     end
     -- call init function
     if cartdata ~= nil then
         _G.path = path
+        presence.state = "playing a game"
+        presence.details = "The user is playing a game"
+        discordrpc.updatePresence(presence)
         pcall(cartdata(), _init())
     end
 end
 
 function love.textinput(t)
-    txt = txt .. t
+    if cartdata == nil then
+        txt = txt .. t
+    end
 end
