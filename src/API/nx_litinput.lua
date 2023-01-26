@@ -24,7 +24,7 @@ function litinput.gamepad.isButtonPressed(button)
 end
 
 function litinput.gamepad.getAxis(axisName)
-    
+    return gamepad.getAxis(axisName)
 end
 
 return litinput

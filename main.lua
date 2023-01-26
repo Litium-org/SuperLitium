@@ -20,6 +20,7 @@ function love.load()
     discordrpc          = require 'libraries.discordRPC'
 
     bootloader_rand = math.random(1, 10)
+    txt = ""
     showCredits = false
     isError = false
     contributors = {
@@ -39,11 +40,13 @@ function love.load()
         largeImageText = "Superlitium"
     }
     discordrpc.updatePresence(presence)
-
     local joysticks = love.joystick.getJoysticks()
 	joystick = joysticks[1]
 
     print("-=[ SuperLitium ]=-")
+
+    -- install system folders --
+    installer.install()
 
     -- init --
     litiumapi.litgraphics.changePallete()
@@ -67,6 +70,7 @@ function love.draw()
     else
         litiumapi.litgraphics.newText("No game loaded", 480, 200, 3, 3, 1)
         litiumapi.litgraphics.newText("drag 'n drop a folder with a valid game", 280, 280, 3, 3, 1)
+        litiumapi.litgraphics.newText("press 'home' any time to exit from a game", 280, 420, 3, 3, 1)
         if bootloader_rand < 4 then
             litiumapi.litgraphics.newSprite(shell.icons.bootloader.litlogoEasterEgg, 370, 170, 8)
         else

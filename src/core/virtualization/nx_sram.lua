@@ -31,34 +31,6 @@ function sram.newSoundSource(tag, songtable)
 end
 
 function sram.update(tag)
-    --[[
-    for soundSource = 1, #buffer.soundSources, 1 do
-        local k = findByTag(tag)
-
-        if buffer.soundSources[k].tag == tag then
-            if buffer.soundSources[k].meta.isPlaying then
-                buffer.soundSources[k].meta.msElapsed = buffer.soundSources[k].meta.msElapsed + 1
-                if buffer.soundSources[k].meta.msElapsed > buffer.soundSources[k].song[buffer.soundSources[k].meta.currentSection][4] then
-                    buffer.soundSources[k].meta.msElapsed = 0
-                    soundTH.newTone(
-                        buffer.soundSources[k].song[buffer.soundSources[k].meta.currentSection][1],
-                        buffer.soundSources[k].song[buffer.soundSources[k].meta.currentSection][2],
-                        buffer.soundSources[k].song[buffer.soundSources[k].meta.currentSection][3]
-                    )
-                    buffer.soundSources[k].meta.currentSection = buffer.soundSources[k].meta.currentSection + 1
-                    if not buffer.soundSources[k].meta.isLooped then
-                        if buffer.soundSources[k].meta.currentSection > #buffer.soundSources[k].meta.currentSection then
-                            buffer.soundSources[k].meta.currentSection = buffer.soundSources[k].meta.currentSection - 1
-                            buffer.soundSources[k].meta.isPlaying = false
-                        else
-                            buffer.soundSources[k].meta.currentSection = 1
-                        end
-                    end
-                end
-            end
-        end
-    end
-    ]]--
     for _, soundSource in pairs(buffer.soundSources) do
         if soundSource.meta.isPlaying then
             soundSource.meta.msElapsed = soundSource.meta.msElapsed + 1
