@@ -27,4 +27,8 @@ function litinput.gamepad.getAxis(axisName)
     return gamepad.getAxis(axisName)
 end
 
+function litinput.gamepad.vibrateGamepad(side, strenght, duration)
+    return gamepad.vibrate(side, strenght, duration)
+end
+
 return litinput

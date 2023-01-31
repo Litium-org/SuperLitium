@@ -15,4 +15,18 @@ function gamepad.getAxis(axis)
     end
 end
 
+function gamepad.vibrate(side, strenght, duration)
+    if joystick:isVibrationSupported() then
+        if side == "left" then
+            return joystick:setVibration(strenght, 0, duration)
+        end
+        if side == "right" then
+            return joystick:setVibration(0, strenght, duration)
+        end
+        if side == "both" then
+            return joystick:setVibration(strenght, strenght, duration)
+        end
+    end
+end
+
 return gamepad

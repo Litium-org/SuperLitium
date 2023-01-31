@@ -71,6 +71,9 @@ function love.draw()
         litiumapi.litgraphics.newText("No game loaded", 480, 200, 3, 3, 1)
         litiumapi.litgraphics.newText("drag 'n drop a folder with a valid game", 280, 280, 3, 3, 1)
         litiumapi.litgraphics.newText("press 'home' any time to exit from a game", 280, 420, 3, 3, 1)
+        if joystick ~= nil then
+            litiumapi.litgraphics.newText("Gamepad connected!", 280, 480, 3, 3, 1)
+        end
         if bootloader_rand < 4 then
             litiumapi.litgraphics.newSprite(shell.icons.bootloader.litlogoEasterEgg, 370, 170, 8)
         else
@@ -88,7 +91,7 @@ function love.draw()
         if isError then
             litiumapi.litgraphics.backgroundColor(7)
             txt1 = "invalid game detected!"
-            txt2 = "please drag'n drop a valid game"
+            txt2 = "please drag 'n drop a valid game"
             litiumapi.litgraphics.newText(txt1, 480 - (#txt1 * 2), 203, 3, 2, 1)
             litiumapi.litgraphics.newText(txt1, 480 - (#txt1 * 2), 200, 3, 3, 1)
             litiumapi.litgraphics.newText(txt2, 480 - (#txt2 * 2), 233, 3, 2, 1)
