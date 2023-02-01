@@ -7,6 +7,7 @@ function love.load()
     love.setDeprecationOutput(false)
     https               = require 'https'
     stringx             = require 'pl.stringx'
+    json                = require 'libraries.json'
     installer           = require 'src.engine.resources.nx_installer'
     litiumapi           = require 'src.API.nx_litiumAPI'
     keyboard            = require 'src.core.virtualization.drivers.nx_keyboard-dvr'
@@ -29,7 +30,7 @@ function love.load()
     }
 
     -- main thread for install folders and system components
-    --installer.install()
+    installer.install()
 
     discordrpc.initialize("1066839658232828004", false, nil)
     discordrpc.clearPresence()
@@ -145,6 +146,14 @@ end
 
 function love.directorydropped(path)
     cartdata, error = fs.load(path .. "/" .. "boot.lua")
+    infoFile = fs.getInfo(path .. "/" .. ".data")
+    if infoFile ~= nil then
+        dataraw = fs.read(path .. "/" .. ".data")
+        data = json.decode(dataraw)
+        litsystem.setTitle("Superlitium Player | " .. data.title)
+    end
+
+
     if error ~= nil then
         isError = true
         --print(error)

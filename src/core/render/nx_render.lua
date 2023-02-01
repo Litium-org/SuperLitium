@@ -19,7 +19,7 @@ function Render.drawCall(spritetbl, x, y, scale)
         for xp = 1, #spritetbl[1] do
             color = colors[spritetbl[yp][xp]]
             r, g, b, a = love.math.colorFromBytes(color[1], color[2], color[3], color[4])
-            if yp > 24 or xp > 24 then
+            if yp > 32 or xp > 32 then
                 return
             else
                 if scale > 20 then
