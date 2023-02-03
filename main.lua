@@ -5,7 +5,6 @@ function love.load()
 
     love.keyboard.setKeyRepeat(true)
     love.setDeprecationOutput(false)
-    https               = require 'https'
     stringx             = require 'pl.stringx'
     json                = require 'libraries.json'
     installer           = require 'src.engine.resources.nx_installer'
@@ -55,7 +54,7 @@ function love.load()
     -- lock some commands XDDD
     nativelocks.lock()
 
-    -- create storage file 
+    -- create storage file
     storage.init()
 
     -- call init function

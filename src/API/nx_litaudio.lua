@@ -10,6 +10,12 @@ function litaudio.newSource(sourceName, songData)
     sram.newSoundSource(sourceName, songData)
 end
 
+function litaudio.createSourceFromFile(sourceName, path)
+    local musicFile = fs.read(_G.path .. "/" .. path .. ".mus")
+    local decodeMusicFile = json.decode(musicFile)
+    sram.newSoundSource(sourceName, decodeMusicFile)
+end
+
 ---update sound sources and play based on tag
 ---@param sourceName string
 function litaudio.updateSource(sourceName)

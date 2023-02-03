@@ -5,7 +5,7 @@ function love.conf(w)
     w.window.title          = "Superlitium Player"
     w.console               = true
     w.identity              = "superLitium"
-    w.window.resizable      = false 
+    w.window.resizable      = false
 
     w.modules.audio         = true              -- Enable the audio module (boolean)
     w.modules.data          = false               -- Enable the data module (boolean)
